@@ -3,6 +3,8 @@ package biz.uoray.api.controller;
 import biz.uoray.api.entity.Car;
 import biz.uoray.api.form.CarForm;
 import biz.uoray.api.service.CarService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/v1/cars")
+@Api(value = "車種コントローラ", tags = "CarController", produces = "application/json")
 public class CarController {
 
     @Autowired
@@ -25,6 +28,7 @@ public class CarController {
      * @param model
      * @return
      */
+    @ApiOperation(value = "車種一覧を取得する", nickname = "getCars")
     @GetMapping()
     public String getCar(Model model, Pageable pageable) {
         Page<Car> carEntityPage = carService.getAll(pageable);
@@ -39,6 +43,7 @@ public class CarController {
      *
      * @return
      */
+    @ApiOperation(value = "車種情報を登録する", nickname = "newCar")
     @GetMapping("/new")
     public String createCar(CarForm carForm) {
         return "car/new";
@@ -51,6 +56,7 @@ public class CarController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation(value = "車種情報を登録する", nickname = "createCar")
     @PostMapping("/create")
     public String insertCar(@Validated CarForm carForm,
                             BindingResult bindingResult) {
@@ -71,6 +77,7 @@ public class CarController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "車種情報を編集する", nickname = "createCar")
     @GetMapping("/{id}/edit")
     public String editCar(Model model,
                           CarForm carForm,
@@ -91,6 +98,7 @@ public class CarController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation(value = "車種情報を編集する", nickname = "createCar")
     @PutMapping("/{id}/update")
     public String updateCar(Model model,
                             @PathVariable("id") Integer id,
@@ -112,6 +120,7 @@ public class CarController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "車種情報を削除する", nickname = "createCar")
     @DeleteMapping("/{id}/delete")
     public String deleteCar(@PathVariable("id") Integer id) {
 
