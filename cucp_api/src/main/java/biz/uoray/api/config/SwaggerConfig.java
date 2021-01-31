@@ -33,10 +33,8 @@ public class SwaggerConfig {
                 .title("CUCP API")
                 .description("CUCPのAPIデバッグページ")
                 .version("0.0.1")
-                .contact(new Contact("name", "URL", "email"))
-                .license("license")
-                .licenseUrl("license URL")
-                .termsOfServiceUrl("")
+                .contact(new Contact("UOray engineer Team", "", ""))
+                .termsOfServiceUrl("http://localhost:8080")
                 .build();
     }
 

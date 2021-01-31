@@ -45,8 +45,8 @@ public class CarService {
      * @param code
      * @param name
      */
-    public void createCar(String code, String name) {
-        carRepository.save(new Car(code, name));
+    public Car createCar(String code, String name) {
+        return carRepository.save(new Car(code, name));
     }
 
     /**
@@ -56,13 +56,13 @@ public class CarService {
      * @param code
      * @param name
      */
-    public void updateCar(Integer carId, String code, String name) {
+    public Car updateCar(Integer carId, String code, String name) {
         Car car = carRepository.getOne(carId);
         if (car != null) {
             car.setCode(code);
             car.setName(name);
-            carRepository.save(car);
         }
+        return carRepository.save(car);
     }
 
     /**
