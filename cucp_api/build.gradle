@@ -43,6 +43,9 @@ repositories {
 
 dependencies {
 	// SpringBoot関連の依存定義
+	// commonプロジェクトのインポート
+	implementation project(':CUCP_common')
+
 	// フロント関連
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
