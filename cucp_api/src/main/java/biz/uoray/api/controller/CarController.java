@@ -1,5 +1,6 @@
 package biz.uoray.api.controller;
 
+import biz.uoray.api.request.RequestCar;
 import biz.uoray.api.response.ResponseCar;
 import biz.uoray.api.response.ResponseCarList;
 import biz.uoray.api.service.CarService;
@@ -42,9 +43,8 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種情報を登録する", nickname = "createCar")
     @PostMapping("/create")
-    public ResponseCar insertCar(ResponseCar responseCar) throws Exception {
-
-        return new ResponseCar(carService.createCar(responseCar.getCode(), responseCar.getName()));
+    public ResponseCar postCar(@RequestBody RequestCar requestCar) throws Exception {
+        return new ResponseCar(carService.createCar(requestCar.getCode(), requestCar.getName()));
     }
 
     /**
@@ -52,12 +52,12 @@ public class CarController {
      *
      * @return
      */
-    @ApiOperation(value = "車種情報を編集する", nickname = "createCar")
+    @ResponseBody
+    @ApiOperation(value = "車種情報を編集する", nickname = "updateCar")
     @PutMapping("/{id}/update")
-    public ResponseCar updateCar(@Validated @RequestParam("id") Integer id,
-                                 ResponseCar responseCar) throws Exception {
-
-        return new ResponseCar(carService.updateCar(id, responseCar.getCode(), responseCar.getName()));
+    public ResponseCar putCar(@PathVariable("id") Integer id,
+                              @Validated @RequestBody RequestCar requestCar) throws Exception {
+        return new ResponseCar(carService.updateCar(id, requestCar.getCode(), requestCar.getName()));
     }
 
     /**
@@ -66,10 +66,10 @@ public class CarController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "車種情報を削除する", nickname = "createCar")
+    @ResponseBody
+    @ApiOperation(value = "車種情報を削除する", nickname = "deleteCar")
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteCar(@PathVariable("id") Integer id) {
-
         carService.deleteCar(id);
         return ResponseEntity.ok().build();
     }
