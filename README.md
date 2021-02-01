@@ -1,5 +1,5 @@
 # CUCP_api
-CUCPのAPIプロジェクト
+CUCPのAPIプロジェクト。  
 
 ## Swagger
 http://localhost:8080/swagger-ui.html
