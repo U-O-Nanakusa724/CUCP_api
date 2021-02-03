@@ -1,6 +1,6 @@
 package biz.uoray.api.response;
 
-import biz.uoray.api.entity.Car;
+import biz.uoray.common.entity.Car;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

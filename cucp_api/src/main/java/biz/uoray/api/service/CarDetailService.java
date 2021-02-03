@@ -1,16 +1,18 @@
 package biz.uoray.api.service;
 
 import biz.uoray.api.dto.CarDetailDto;
-import biz.uoray.api.entity.CarDetail;
-import biz.uoray.api.entity.Car;
-import biz.uoray.api.entity.Price;
-import biz.uoray.api.entity.Store;
+
 import biz.uoray.api.form.CarDetailForm;
-import biz.uoray.api.repository.CarDetailRepository;
-import biz.uoray.api.repository.CarRepository;
-import biz.uoray.api.repository.StoreRepository;
-import biz.uoray.api.repository.implement.CarDetailRepositoryImpl;
-import biz.uoray.api.util.DateUtil;
+
+import biz.uoray.common.entity.Car;
+import biz.uoray.common.entity.CarDetail;
+import biz.uoray.common.entity.Price;
+import biz.uoray.common.entity.Store;
+import biz.uoray.common.repository.CarDetailRepository;
+import biz.uoray.common.repository.CarRepository;
+import biz.uoray.common.repository.StoreRepository;
+import biz.uoray.common.repository.implement.CarDetailRepositoryImpl;
+import biz.uoray.common.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,8 @@
 package biz.uoray.api.controller;
 
-import biz.uoray.api.entity.Price;
 import biz.uoray.api.form.PriceForm;
-
 import biz.uoray.api.service.PriceService;
+import biz.uoray.common.entity.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

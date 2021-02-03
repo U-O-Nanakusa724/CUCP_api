@@ -1,10 +1,10 @@
 package biz.uoray.api.service;
 
-import biz.uoray.api.entity.CarDetail;
-import biz.uoray.api.entity.Price;
 import biz.uoray.api.form.PriceForm;
-import biz.uoray.api.repository.CarDetailRepository;
-import biz.uoray.api.repository.PriceRepository;
+import biz.uoray.common.entity.CarDetail;
+import biz.uoray.common.entity.Price;
+import biz.uoray.common.repository.CarDetailRepository;
+import biz.uoray.common.repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

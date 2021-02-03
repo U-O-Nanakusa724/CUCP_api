@@ -1,7 +1,7 @@
 package biz.uoray.api.service;
 
-import biz.uoray.api.entity.Store;
-import biz.uoray.api.repository.StoreRepository;
+import biz.uoray.common.entity.Store;
+import biz.uoray.common.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -5,24 +5,24 @@ import java.util.Map;
 
 public class GraphDto {
 
-	private List<String> dateLabelList;
+    private List<String> dateLabelList;
 
-	Map<String, String[]> priceLabelMap;
+    Map<String, String[]> priceLabelMap;
 
-	public List<String> getDateLabelList() {
-		return dateLabelList;
-	}
+    public List<String> getDateLabelList() {
+        return dateLabelList;
+    }
 
-	public void setDateLabelList(List<String> dateLabelList) {
-		this.dateLabelList = dateLabelList;
-	}
+    public void setDateLabelList(List<String> dateLabelList) {
+        this.dateLabelList = dateLabelList;
+    }
 
-	public Map<String, String[]> getPriceLabelMap() {
-		return priceLabelMap;
-	}
+    public Map<String, String[]> getPriceLabelMap() {
+        return priceLabelMap;
+    }
 
-	public void setPriceLabelMap(Map<String, String[]> priceLabelMap) {
-		this.priceLabelMap = priceLabelMap;
-	}
+    public void setPriceLabelMap(Map<String, String[]> priceLabelMap) {
+        this.priceLabelMap = priceLabelMap;
+    }
 
 }
