@@ -1,9 +1,9 @@
 package biz.uoray.api.dto;
 
-import biz.uoray.api.entity.CarDetail;
-import biz.uoray.api.entity.Car;
-import biz.uoray.api.entity.Price;
-import biz.uoray.api.entity.Store;
+import biz.uoray.common.entity.Car;
+import biz.uoray.common.entity.CarDetail;
+import biz.uoray.common.entity.Price;
+import biz.uoray.common.entity.Store;
 
 import java.util.Map;
 

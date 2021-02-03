@@ -1,7 +1,7 @@
 package biz.uoray.api.service;
 
-import biz.uoray.api.entity.Car;
-import biz.uoray.api.repository.CarRepository;
+import biz.uoray.common.entity.Car;
+import biz.uoray.common.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class CarService {
     public List<Car> getActiveCarList() {
 
         return carRepository.findAll().stream()
-                .filter(carEntity -> carEntity.getDeletedAt() == null)
+                .filter(car -> car.getDeletedAt() == null)
                 .collect(Collectors.toList());
     }
 

@@ -1,8 +1,8 @@
 package biz.uoray.api.controller;
 
 import biz.uoray.api.dto.GraphDto;
-import biz.uoray.api.entity.Car;
 import biz.uoray.api.service.GraphService;
+import biz.uoray.common.entity.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

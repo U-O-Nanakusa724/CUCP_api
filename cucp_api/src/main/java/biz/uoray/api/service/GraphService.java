@@ -1,12 +1,12 @@
 package biz.uoray.api.service;
 
 import biz.uoray.api.dto.GraphDto;
-import biz.uoray.api.entity.CarDetail;
-import biz.uoray.api.entity.Car;
 
-import biz.uoray.api.entity.Price;
-import biz.uoray.api.repository.implement.GraphRepositoryImpl;
-import biz.uoray.api.util.DateUtil;
+import biz.uoray.common.entity.Car;
+import biz.uoray.common.entity.CarDetail;
+import biz.uoray.common.entity.Price;
+import biz.uoray.common.repository.implement.GraphRepositoryImpl;
+import biz.uoray.common.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

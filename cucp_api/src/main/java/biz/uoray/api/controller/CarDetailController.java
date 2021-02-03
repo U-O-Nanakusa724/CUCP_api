@@ -1,11 +1,11 @@
 package biz.uoray.api.controller;
 
-import biz.uoray.api.entity.CarDetail;
 import biz.uoray.api.form.CarDetailForm;
 import biz.uoray.api.form.StoreForm;
 import biz.uoray.api.service.CarDetailService;
 import biz.uoray.api.service.CarService;
 import biz.uoray.api.service.StoreService;
+import biz.uoray.common.entity.CarDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
