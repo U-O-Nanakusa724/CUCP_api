@@ -1,22 +1,113 @@
-plugins {
-	id 'org.springframework.boot' version '2.4.2'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+import org.yaml.snakeyaml.Yaml
+
+buildscript {
+	ext {
+		springBootVersion = '2.2.7.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.yaml:snakeyaml:1.23")
+		classpath "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:5.2.4"
+		classpath("mysql:mysql-connector-java:8.0.20")
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
+	}
 }
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "org.flywaydb.flyway"
 
 group = 'biz.upray'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	// SpringBoot関連の依存定義
+	// commonプロジェクトのインポート
+	implementation project(':CUCP_common')
+
+	// フロント関連
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compile "org.thymeleaf:thymeleaf"
+	compile('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
+	// DB関連
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	// バリデーション関連
+	implementation 'javax.validation:validation-api'
+	runtimeOnly 'org.hibernate.validator:hibernate-validator'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Swagger
+	compile 'io.springfox:springfox-core:2.9.2'
+	compile "io.springfox:springfox-swagger2:2.9.2"
+	compile 'io.springfox:springfox-swagger-ui:2.9.2'
+
+	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 test {
 	useJUnitPlatform()
+}
+
+// 以下、タスク定義
+bootJar {
+	group = 'biz.uoray'
+	jar.baseName = 'cucp'
+	sourceCompatibility = 1.8
+}
+
+bootJar {
+	doLast {
+		copy {
+			from "${buildDir}/libs/cucp.jar"
+			from "${projectDir}/libs/jetty-alpn-agent-2.0.9.jar"
+			into "deploy/"
+		}
+	}
+}
+
+flyway {
+	def applicationYaml = 'application-dev.yml'
+
+	if (project.hasProperty('env') && project.env.matches(/^(local|dev|pro)$/)) {
+		applicationYaml = "application-" + project.env + ".yml"
+	} else {
+		System.out.println("環境を指定して実行してください -Penv=local/dev/pro")
+		return
+	}
+
+	def cfg = new Yaml().load(new File("src/main/resources/${applicationYaml}").newInputStream())
+	url = cfg.spring."flyway-settings".url
+	user = cfg.spring."flyway-settings".user
+	password = cfg.spring."flyway-settings".password
+	schemas = ['cucp']
+	locations = ['filesystem:./flyway/sql']
 }
