@@ -1,7 +1,7 @@
 package biz.uoray.api.service;
 
-import biz.uoray.common.entity.Car;
-import biz.uoray.common.repository.CarRepository;
+import biz.uoray.api.common.entity.Car;
+import biz.uoray.api.common.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

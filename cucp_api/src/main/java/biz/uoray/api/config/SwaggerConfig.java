@@ -23,7 +23,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.regex("v1.*"))
+                .paths(PathSelectors.regex("/v1/.*"))
                 .build()
                 .apiInfo(apiInfo());
     }

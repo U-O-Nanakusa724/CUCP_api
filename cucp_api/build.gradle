@@ -80,7 +80,6 @@ test {
 // 以下、タスク定義
 bootJar {
 	group = 'biz.uoray'
-	jar.baseName = 'cucp'
 	sourceCompatibility = 1.8
 }
 

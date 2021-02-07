@@ -1,6 +1,5 @@
 package biz.uoray.api.controller;
 
-
 import biz.uoray.api.request.RequestCar;
 import biz.uoray.api.response.ResponseCar;
 import biz.uoray.api.response.ResponseCarList;
