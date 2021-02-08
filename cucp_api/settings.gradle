@@ -1,4 +1,4 @@
-include ':CUCP_common'
 rootProject.name = 'cucp_api'
 
+include ':CUCP_common'
 project(':CUCP_common').projectDir = new File('../../CUCP_common/cucp_common')
