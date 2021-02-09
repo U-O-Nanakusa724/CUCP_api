@@ -5,11 +5,13 @@ CUCPのAPIプロジェクト。
 
 ```dir
 cucp_api
-+ environments
-|  + DB              :ER図
-|  + system
-|  + wiki 
-+ 
++ environments       :docker-composeなど環境に関するファイルを格納
+|  + DB              :ER図を格納
+|  + system          :サービスの起動・停止シェルを格納
+|  + wiki            :解説マークダウンを格納(GithubのWikiが復帰したら削除するかも)
++ flyway
+|  + seed            :サンプルデータをInsertするクエリファイルを格納する
+|  + sql             :flywayマイグレーション実行ファイルを格納する
 + src/main
 |  + java/biz/uoray/cucp
 |  |   + config      :SpringBootやSwaggerなどのコンフィグクラスを格納する
