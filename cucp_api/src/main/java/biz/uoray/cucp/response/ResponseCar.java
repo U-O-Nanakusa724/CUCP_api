@@ -1,7 +1,6 @@
 package biz.uoray.cucp.response;
 
 import biz.uoray.cucp.entity.Car;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModel;
@@ -19,15 +18,12 @@ public class ResponseCar {
         this.name = car.getName();
     }
 
-    @JsonProperty("id")
     @ApiModelProperty("車種ID")
     int id;
 
-    @JsonProperty("code")
     @ApiModelProperty("車種コード")
     String code;
 
-    @JsonProperty("name")
     @ApiModelProperty("車種和名")
     String name;
 
