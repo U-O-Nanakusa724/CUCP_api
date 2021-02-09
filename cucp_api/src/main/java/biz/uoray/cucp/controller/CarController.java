@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @Controller
 @RequestMapping(path = "/v1/cars")
 @Api(value = "車種コントローラ", tags = "CarController", produces = "application/json")
