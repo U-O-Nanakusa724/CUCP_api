@@ -1,6 +1,5 @@
 package biz.uoray.cucp.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModel;
@@ -19,15 +18,12 @@ public class ResponsePageable {
         this.totalElements = page.getTotalElements();
     }
 
-    @JsonProperty("page")
     @ApiModelProperty("ページ")
     private long page;
 
-    @JsonProperty("total_pages")
     @ApiModelProperty("総ページ数")
     private long totalPages;
 
-    @JsonProperty("total_elements")
     @ApiModelProperty("総コンテンツ数")
     private long totalElements;
 
