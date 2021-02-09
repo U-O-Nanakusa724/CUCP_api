@@ -13,12 +13,10 @@ import javax.validation.constraints.Size;
 public class RequestCar {
 
     @Size(min = 1, max = 64)
-    @JsonProperty("code")
     @ApiModelProperty("車種コード")
     String code;
 
     @Size(max = 64)
-    @JsonProperty("name")
     @ApiModelProperty("車種和名")
     String name;
 }
