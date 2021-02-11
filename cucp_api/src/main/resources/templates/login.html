@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CUCP | ログイン</title>
+</head>
+<body>
+<form th:action="@{/sign_in}" method="post">
+        <input type="text" name="username">user_name
+        <br/>
+        <input type="password" name="password">password
+
+        <br/>
+
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>

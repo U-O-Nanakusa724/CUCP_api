@@ -71,6 +71,9 @@ dependencies {
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// ログイン関連
+	compile "org.springframework.boot:spring-boot-starter-security"
+
 }
 
 test {
