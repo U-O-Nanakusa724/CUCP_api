@@ -53,6 +53,7 @@ dependencies {
 	compile('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
 	// DB関連
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compile("org.springframework.boot:spring-boot-starter-jdbc")
 	runtimeOnly 'mysql:mysql-connector-java'
 
 	// バリデーション関連
@@ -70,6 +71,9 @@ dependencies {
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// ログイン関連
+	compile "org.springframework.boot:spring-boot-starter-security"
 
 }
 
