@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CarService {
@@ -20,13 +18,11 @@ public class CarService {
     /**
      * 有効な車種一覧を取得する
      *
+     * @param pageable
      * @return
      */
-    public List<Car> getActiveCarList() {
-
-        return carRepository.findAll().stream()
-                .filter(car -> car.getDeletedAt() == null)
-                .collect(Collectors.toList());
+    public Page<Car> getAll(Pageable pageable) {
+        return carRepository.findActive(pageable);
     }
 
     /**
@@ -76,16 +72,5 @@ public class CarService {
             car.setDeletedAt(new Date());
             carRepository.save(car);
         }
-    }
-
-
-    /**
-     * ページング用の車種一覧を取得する
-     *
-     * @param pageable
-     * @return
-     */
-    public Page<Car> getAll(Pageable pageable) {
-        return carRepository.findAll(pageable);
     }
 }
