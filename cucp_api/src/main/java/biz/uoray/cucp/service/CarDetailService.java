@@ -19,7 +19,7 @@ public class CarDetailService {
      * @return
      */
     public Page<CarDetail> getAll(Pageable pageable) {
-        return carDetailRepository.findAll(pageable);
+        return carDetailRepository.findActive(pageable);
     }
 
 }
