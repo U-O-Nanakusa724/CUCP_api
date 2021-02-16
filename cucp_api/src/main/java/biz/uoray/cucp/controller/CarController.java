@@ -26,7 +26,7 @@ public class CarController {
     /**
      * 車種一覧表示
      *
-     * @return 車種一覧Json
+     * @return 車種一覧
      */
     @ResponseBody
     @ApiOperation(value = "車種一覧を取得する", nickname = "getCars")
@@ -73,5 +73,14 @@ public class CarController {
     public ResponseEntity<Void> deleteCar(@PathVariable("id") Integer id) {
         carService.deleteCar(id);
         return ResponseEntity.ok().build();
+    }
+
+    @ResponseBody
+    @ApiOperation(value = "車種を検索する", nickname = "searchCars")
+    @GetMapping(value = "/search", produces = "application/json")
+    public ResponseCarList searchCar(@RequestParam("select") String select,
+                                     @RequestParam("keyword") String keyword) throws Exception {
+        Pageable pageable = PageRequest.of(0, 20);
+        return new ResponseCarList(carService.searchCar(pageable, select, keyword));
     }
 }

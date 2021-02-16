@@ -26,16 +26,6 @@ public class CarService {
     }
 
     /**
-     * 有効な車種を１件IDで取得する
-     *
-     * @param carId
-     * @return
-     */
-    public Car getActiveCarById(Integer carId) {
-        return carRepository.getOne(carId);
-    }
-
-    /**
      * 車種を１台登録する
      *
      * @param code
@@ -73,4 +63,24 @@ public class CarService {
             carRepository.save(car);
         }
     }
+
+    /**
+     * キーワードを用いて検索した結果をページングで返す
+     *
+     * @param pageable
+     * @param select
+     * @param keyword
+     * @return
+     */
+    public Page<Car> searchCar(Pageable pageable, String select, String keyword) {
+
+        if (select.equals("code")) {
+            return carRepository.searchByCode(pageable, keyword);
+        } else if (select.equals("name")) {
+            return carRepository.searchByName(pageable, keyword);
+        } else {
+            return carRepository.findActive(pageable);
+        }
+    }
+
 }
