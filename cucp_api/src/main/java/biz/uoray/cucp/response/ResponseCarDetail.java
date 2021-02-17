@@ -8,6 +8,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @ApiModel("車種詳細")
@@ -16,12 +19,14 @@ public class ResponseCarDetail {
     public ResponseCarDetail(CarDetail carDetail) {
         this.id = carDetail.getId();
         this.responseCar = new ResponseCar(carDetail.getCar());
+        this.responseStore = new ResponseStore(carDetail.getStore());
         this.color = carDetail.getColor();
         this.distance = carDetail.getDistance();
         this.mission = carDetail.getMission();
         this.modelYear = carDetail.getModelYear();
         this.url = carDetail.getUrl();
         this.note = carDetail.getNote();
+        this.priceList = carDetail.getPriceList().stream().map(ResponsePrice::new).collect(Collectors.toList());
     }
 
     @ApiModelProperty("車種詳細ID")
@@ -31,9 +36,9 @@ public class ResponseCarDetail {
     @ApiModelProperty("車種")
     private ResponseCar responseCar;
 
-//    @JsonProperty("store")
-//    @ApiModelProperty("販売店")
-//    private ResponseStore responseStore;
+    @JsonProperty("store")
+    @ApiModelProperty("販売店")
+    private ResponseStore responseStore;
 
     @ApiModelProperty("カラー")
     private String color;
@@ -53,6 +58,7 @@ public class ResponseCarDetail {
     @ApiModelProperty("備考")
     private String note;
 
-//    @OneToMany(mappedBy = "carDetail", fetch = FetchType.LAZY)
-//    private List<Price> priceList;
+    @JsonProperty("prices")
+    @ApiModelProperty("価格")
+    private List<ResponsePrice> priceList;
 }
