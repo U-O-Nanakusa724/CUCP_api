@@ -33,8 +33,8 @@ public class CarDetailService {
 
     public CarDetail createCarDetail(RequestCarDetail requestCarDetail) {
         CarDetail carDetail = new CarDetail();
-        carDetail.setCar(carRepository.getOne(requestCarDetail.getCarId()));
-        carDetail.setStore(storeRepository.getOne(requestCarDetail.getStoreId()));
+        carDetail.setCar(carRepository.getOne(requestCarDetail.getRequestCar().getId()));
+        carDetail.setStore(storeRepository.getOne(requestCarDetail.getRequestStore().getId()));
         carDetail.setColor(requestCarDetail.getColor());
         carDetail.setDistance(requestCarDetail.getDistance());
         carDetail.setMission(requestCarDetail.getMission());

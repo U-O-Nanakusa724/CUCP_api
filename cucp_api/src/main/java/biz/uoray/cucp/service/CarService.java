@@ -2,6 +2,7 @@ package biz.uoray.cucp.service;
 
 import biz.uoray.cucp.entity.Car;
 import biz.uoray.cucp.repository.CarRepository;
+import biz.uoray.cucp.request.RequestCar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,25 +29,22 @@ public class CarService {
     /**
      * 車種を１台登録する
      *
-     * @param code
-     * @param name
+     * @param requestCar
      */
-    public Car createCar(String code, String name) {
-        return carRepository.save(new Car(code, name));
+    public Car createCar(RequestCar requestCar) {
+        return carRepository.save(new Car(requestCar.getCode(), requestCar.getName()));
     }
 
     /**
      * 車種を１件更新する
      *
-     * @param carId
-     * @param code
-     * @param name
+     * @param requestCar
      */
-    public Car updateCar(Integer carId, String code, String name) {
-        Car car = carRepository.getOne(carId);
+    public Car updateCar(RequestCar requestCar) {
+        Car car = carRepository.getOne(requestCar.getId());
         if (car != null) {
-            car.setCode(code);
-            car.setName(name);
+            car.setCode(requestCar.getCode());
+            car.setName(requestCar.getName());
         }
         return carRepository.save(car);
     }
