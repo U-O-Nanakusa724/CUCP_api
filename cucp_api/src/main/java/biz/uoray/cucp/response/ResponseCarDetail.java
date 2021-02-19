@@ -1,6 +1,7 @@
 package biz.uoray.cucp.response;
 
 import biz.uoray.cucp.entity.CarDetail;
+import biz.uoray.cucp.entity.Price;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,10 @@ public class ResponseCarDetail {
         this.modelYear = carDetail.getModelYear();
         this.url = carDetail.getUrl();
         this.note = carDetail.getNote();
-        this.priceList = carDetail.getPriceList().stream().map(ResponsePrice::new).collect(Collectors.toList());
+        this.priceList = carDetail.getPriceList() == null ? null : carDetail.getPriceList().stream()
+                .sorted(Comparator.comparing(Price::getDate).reversed())
+                .map(ResponsePrice::new)
+                .collect(Collectors.toList());
     }
 
     @ApiModelProperty("車種詳細ID")
