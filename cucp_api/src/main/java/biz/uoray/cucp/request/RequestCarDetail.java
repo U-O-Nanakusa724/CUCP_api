@@ -13,6 +13,9 @@ import javax.validation.constraints.Size;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RequestCarDetail {
 
+    @ApiModelProperty("ID")
+    int id;
+
     @JsonProperty("car")
     @ApiModelProperty("車種ID")
     RequestCar requestCar;
