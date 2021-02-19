@@ -1,6 +1,7 @@
 package biz.uoray.cucp.request;
 
 import biz.uoray.cucp.validation.PositiveDouble;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,14 +13,16 @@ import javax.validation.constraints.Size;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RequestCarDetail {
 
+    @JsonProperty("car")
     @ApiModelProperty("車種ID")
-    int carId;
+    RequestCar requestCar;
 
+    @JsonProperty("store")
     @ApiModelProperty("販売店")
-    int storeId;
+    RequestStore requestStore;
 
     @Size(max = 64)
-    @ApiModelProperty("色")
+    @ApiModelProperty("カラー")
     String color;
 
     @PositiveDouble

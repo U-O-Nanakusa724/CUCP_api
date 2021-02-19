@@ -9,16 +9,12 @@ import javax.validation.constraints.Size;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class RequestCar {
+public class RequestStore {
 
     @ApiModelProperty("ID")
     int id;
 
-    @Size(min = 1, max = 64)
-    @ApiModelProperty("車種コード")
-    String code;
-
     @Size(max = 64)
-    @ApiModelProperty("車種和名")
+    @ApiModelProperty("販売店名")
     String name;
 }

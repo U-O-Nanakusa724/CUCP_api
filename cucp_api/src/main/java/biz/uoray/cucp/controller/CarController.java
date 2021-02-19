@@ -45,7 +45,7 @@ public class CarController {
     @ApiOperation(value = "車種情報を登録する", nickname = "createCar")
     @PostMapping("/create")
     public ResponseCar postCar(@RequestBody RequestCar requestCar) throws Exception {
-        return new ResponseCar(carService.createCar(requestCar.getCode(), requestCar.getName()));
+        return new ResponseCar(carService.createCar(requestCar));
     }
 
     /**
@@ -55,10 +55,9 @@ public class CarController {
      */
     @ResponseBody
     @ApiOperation(value = "車種情報を編集する", nickname = "updateCar")
-    @PutMapping("/{id}/update")
-    public ResponseCar putCar(@PathVariable("id") Integer id,
-                              @Validated @RequestBody RequestCar requestCar) throws Exception {
-        return new ResponseCar(carService.updateCar(id, requestCar.getCode(), requestCar.getName()));
+    @PutMapping("/update")
+    public ResponseCar putCar(@Validated @RequestBody RequestCar requestCar) throws Exception {
+        return new ResponseCar(carService.updateCar(requestCar));
     }
 
     /**
