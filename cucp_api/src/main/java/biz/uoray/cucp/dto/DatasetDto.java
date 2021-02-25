@@ -1,6 +1,6 @@
 package biz.uoray.cucp.dto;
 
-import biz.uoray.cucp.constant.Colors;
+import biz.uoray.cucp.constant.PointStyle;
 import biz.uoray.cucp.entity.CarDetail;
 import lombok.Data;
 
@@ -16,7 +16,7 @@ public class DatasetDto {
         this.borderWidth = 1;
         this.pointRadius = 5;
         this.pointHoverRadius = 20;
-        this.pointStyle = "circle";
+        this.pointStyle = PointStyle.CIRCLE.getStyle();
         this.fill = false;
         this.lineTension = 0.0;
     }
