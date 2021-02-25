@@ -56,7 +56,7 @@ public class StoreController {
     @ResponseBody
     @ApiOperation(value = "販売店を登録する", nickname = "createStores")
     @PostMapping("/create")
-    public ResponseStore postStore(@RequestBody RequestStore requestStore) throws Exception {
+    public ResponseStore postStore(@Validated @RequestBody RequestStore requestStore) throws Exception {
         return new ResponseStore(storeService.createStore(requestStore));
     }
 
