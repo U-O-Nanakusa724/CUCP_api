@@ -92,7 +92,6 @@ public class StoreController {
     /**
      * 販売店検索
      *
-     * @param select
      * @param keyword
      * @return
      * @throws Exception
@@ -100,9 +99,8 @@ public class StoreController {
     @ResponseBody
     @ApiOperation(value = "販売店を検索する", nickname = "searchStores")
     @GetMapping("/search")
-    public ResponseStoreList searchStore(@RequestParam("select") String select,
-                                         @RequestParam("keyword") String keyword) throws Exception {
+    public ResponseStoreList searchStore(@RequestParam("keyword") String keyword) throws Exception {
         Pageable pageable = PageRequest.of(0, 20);
-        return new ResponseStoreList(storeService.searchStore(pageable, select, keyword));
+        return new ResponseStoreList(storeService.searchStore(pageable, keyword));
     }
 }

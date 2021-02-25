@@ -68,15 +68,10 @@ public class StoreService {
      * キーワードを用いて検索した結果をページングで返す
      *
      * @param pageable
-     * @param select
      * @param keyword
      * @return
      */
-    public Page<Store> searchStore(Pageable pageable, String select, String keyword){
-    	if(select.equals("name")) {
-    		return storeRepository.searchByName(pageable, keyword);
-    	}else {
-    		return storeRepository.findActive(pageable);
-    	}
+    public Page<Store> searchStore(Pageable pageable, String keyword){
+        return storeRepository.searchByName(pageable, keyword);
     }
 }
