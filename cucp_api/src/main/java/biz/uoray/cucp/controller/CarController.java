@@ -44,7 +44,7 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種情報を登録する", nickname = "createCar")
     @PostMapping("/create")
-    public ResponseCar postCar(@RequestBody RequestCar requestCar) throws Exception {
+    public ResponseCar postCar(@Validated @RequestBody RequestCar requestCar) throws Exception {
         return new ResponseCar(carService.createCar(requestCar));
     }
 
