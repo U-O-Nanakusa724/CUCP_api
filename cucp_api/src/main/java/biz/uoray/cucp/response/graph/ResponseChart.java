@@ -20,7 +20,7 @@ public class ResponseChart {
 
     public ResponseChart(GraphDto graphDto) {
         this.labels = graphDto.getLabelList();
-        this.inlineDatasetsList = graphDto.getCarDetailList().stream()
+        this.inlineDatasetsList = graphDto.getDatasetDto().stream()
                 .map(InlineDatasets::new)
                 .collect(Collectors.toList());
     }
