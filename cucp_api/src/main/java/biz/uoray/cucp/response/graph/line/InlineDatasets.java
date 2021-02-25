@@ -1,7 +1,6 @@
 package biz.uoray.cucp.response.graph.line;
 
-import biz.uoray.cucp.dto.GraphDto;
-import biz.uoray.cucp.entity.CarDetail;
+import biz.uoray.cucp.dto.DatasetDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -17,14 +16,14 @@ import java.util.stream.Collectors;
 @ApiModel("車種詳細データ")
 public class InlineDatasets {
 
-    public InlineDatasets(CarDetail carDetail) {
-        this.label = carDetail.getCar().getCode() + " " + carDetail.getStore().getName();
-        this.priceList = carDetail.getPriceList().stream()
-                .map(InlinePrice::new)
-                .collect(Collectors.toList());
-        this.borderColor = "#CFD8DC";
-        this.fill = false;
-        this.lineTension = 0.0;
+    public InlineDatasets(DatasetDto datasetDto) {
+        this.label = datasetDto.getLabel();
+        this.priceList = datasetDto.getData().stream().map(InlinePrice::new).collect(Collectors.toList());
+        this.borderWidth = datasetDto.getBorderWidth();
+        this.pointRadius = datasetDto.getPointRadius();
+        this.pointStyle = datasetDto.getPointStyle();
+        this.fill = datasetDto.isFill();
+        this.lineTension = datasetDto.getLineTension();
     }
 
     @ApiModelProperty("車種+販売店名")
@@ -32,11 +31,23 @@ public class InlineDatasets {
 
     @ApiModelProperty("車種詳細データ")
     @JsonProperty("data")
-    private List<InlinePrice> priceList;
+    private List<Object> priceList;
 
-    @ApiModelProperty("線の色")
-    @JsonProperty("borderColor")
-    private String borderColor;
+    @ApiModelProperty("線の太さ")
+    @JsonProperty("borderWidth")
+    private int borderWidth;
+
+    @ApiModelProperty("点の大きさ")
+    @JsonProperty("pointRadius")
+    private int pointRadius;
+
+    @ApiModelProperty("マウスオーバー時の点の大きさ")
+    @JsonProperty("pointHoverRadius")
+    private int pointHoverRadius;
+
+    @ApiModelProperty("点の形")
+    @JsonProperty("pointStyle")
+    private String pointStyle;
 
     @ApiModelProperty("下の塗りつぶし")
     private boolean fill;

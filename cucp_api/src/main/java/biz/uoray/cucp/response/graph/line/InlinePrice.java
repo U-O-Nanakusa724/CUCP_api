@@ -15,7 +15,8 @@ import java.util.Date;
 @ApiModel("価格")
 public class InlinePrice {
 
-    public InlinePrice(Price price){
+    public InlinePrice(Object object) {
+        Price price = (Price) object;
         this.label = price.getDate();
         this.value = String.valueOf(price.getPrice());
     }

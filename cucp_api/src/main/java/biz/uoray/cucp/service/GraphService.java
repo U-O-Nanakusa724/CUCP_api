@@ -1,5 +1,6 @@
 package biz.uoray.cucp.service;
 
+import biz.uoray.cucp.dto.DatasetDto;
 import biz.uoray.cucp.dto.GraphDto;
 
 import biz.uoray.cucp.entity.CarDetail;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -28,7 +30,6 @@ public class GraphService {
                 .getContent();
 
         GraphDto graphDto = new GraphDto();
-        graphDto.setCarDetailList(carDetailList);
 
         // 日付ラベル生成処理
         List<Date> dateList= new ArrayList<>();
@@ -40,6 +41,12 @@ public class GraphService {
         }));
         Collections.sort(dateList);
         graphDto.setLabelList(dateList);
+
+        // データをDatasetsDTOに格納、変換
+        List<DatasetDto> datasetDtoList = carDetailList.stream()
+                .filter(carDetail -> carDetail.getPriceList().size() != 0)
+                .map(DatasetDto::new).collect(Collectors.toList());
+        graphDto.setDatasetDto(datasetDtoList);
 
         return graphDto;
     }
