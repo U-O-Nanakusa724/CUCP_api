@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://35.212.186.90:33062/cucp?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://35.212.149.228:33062/cucp?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8
     username: cucp
     password: Cucp_2020
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,7 +16,7 @@ spring:
       filter:
         enabled: true
   flyway-settings:
-    url: jdbc:mysql://35.212.186.90:33062/cucp?autoReconnectForPools=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://35.212.149.228:33062/cucp?autoReconnectForPools=true&useSSL=false&useUnicode=true&characterEncoding=utf8
     user: cucp
     password: Cucp_2020
     baseline-on-migrate: true
