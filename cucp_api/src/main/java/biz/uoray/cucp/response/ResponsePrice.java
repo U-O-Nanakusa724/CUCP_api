@@ -16,9 +16,17 @@ import java.util.Date;
 public class ResponsePrice {
 
     public ResponsePrice(Price price) {
+        this.priceId = price.getId();
+        this.detailId = price.getCarDetail().getId();
         this.price = price.getPrice();
         this.date = price.getDate();
     }
+
+    @ApiModelProperty("価格ID")
+    int priceId;
+
+    @ApiModelProperty("車種詳細ID")
+    int detailId;
 
     @ApiModelProperty("価格")
     private double price;
