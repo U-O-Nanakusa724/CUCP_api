@@ -2,6 +2,7 @@ package biz.uoray.cucp.service;
 
 import biz.uoray.cucp.entity.Car;
 import biz.uoray.cucp.entity.CarDetail;
+import biz.uoray.cucp.entity.Price;
 import biz.uoray.cucp.entity.Store;
 import biz.uoray.cucp.repository.CarDetailRepository;
 import biz.uoray.cucp.repository.CarRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class CarDetailService {
@@ -33,7 +36,14 @@ public class CarDetailService {
      * @return
      */
     public Page<CarDetail> getAll(Pageable pageable) {
-        return carDetailRepository.findActive(pageable);
+        // TODO Entityで対応できればここのロジックは不要
+        Page<CarDetail> carDetails = carDetailRepository.findActive(pageable);
+        carDetails.forEach(carDetail -> {
+            List<Price> priceList = carDetail.getPriceList();
+            priceList.removeIf(price -> price.getDeletedAt() != null);
+            carDetail.setPriceList(priceList);
+        });
+        return carDetails;
     }
 
     /**
