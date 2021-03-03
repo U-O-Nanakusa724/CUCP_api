@@ -28,14 +28,14 @@ public class PriceController {
     @ResponseBody
     @ApiOperation(value = "価格を登録する", nickname = "createPrice")
     @PostMapping("/create")
-    public ResponsePrice postCar(@Validated @RequestBody RequestPrice requestPrice) throws Exception {
+    public ResponsePrice postPrice(@Validated @RequestBody RequestPrice requestPrice) throws Exception {
         return new ResponsePrice(priceService.createPrice(requestPrice));
     }
 
     @ResponseBody
     @ApiOperation(value = "価格を編集する", nickname = "updatePrice")
     @PutMapping("/update")
-    public ResponsePrice updatePrice(@RequestBody RequestPrice requestPrice) {
+    public ResponsePrice putPrice(@Validated @RequestBody RequestPrice requestPrice) throws Exception {
         return new ResponsePrice(priceService.updatePrice(requestPrice));
     }
 

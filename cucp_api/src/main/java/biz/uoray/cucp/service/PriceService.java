@@ -25,7 +25,7 @@ public class PriceService {
      * @param
      */
     public Price createPrice(RequestPrice requestPrice) {
-        CarDetail carDetail = carDetailRepository.getOne(requestPrice.getRequestCarDetail().getId());
+        CarDetail carDetail = carDetailRepository.getOne(requestPrice.getDetailId());
         return priceRepository.save(new Price(carDetail, requestPrice.getPrice(), requestPrice.getDate()));
     }
 
@@ -35,7 +35,7 @@ public class PriceService {
      * @param
      */
     public Price updatePrice(RequestPrice requestPrice) {
-        Price price = priceRepository.getOne(requestPrice.getId());
+        Price price = priceRepository.getOne(requestPrice.getPriceId());
         if (price != null) {
             price.setPrice(requestPrice.getPrice());
             price.setDate(requestPrice.getDate());
