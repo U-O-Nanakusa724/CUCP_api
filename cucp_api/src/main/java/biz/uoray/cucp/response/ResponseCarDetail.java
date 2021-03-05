@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ResponseCarDetail {
 
     public ResponseCarDetail(CarDetail carDetail) {
-        this.id = carDetail.getId();
+        this.detailId = carDetail.getId();
         this.responseCar = new ResponseCar(carDetail.getCar());
         this.responseStore = new ResponseStore(carDetail.getStore());
         this.color = carDetail.getColor();
@@ -35,7 +35,7 @@ public class ResponseCarDetail {
     }
 
     @ApiModelProperty("車種詳細ID")
-    private int id;
+    private int detailId;
 
     @JsonProperty("car")
     @ApiModelProperty("車種")
