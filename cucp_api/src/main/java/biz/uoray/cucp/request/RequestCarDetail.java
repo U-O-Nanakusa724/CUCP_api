@@ -14,15 +14,13 @@ import javax.validation.constraints.Size;
 public class RequestCarDetail {
 
     @ApiModelProperty("ID")
-    int id;
+    int detailId;
 
-    @JsonProperty("car")
     @ApiModelProperty("車種ID")
-    RequestCar requestCar;
+    private int carId;
 
-    @JsonProperty("store")
     @ApiModelProperty("販売店")
-    RequestStore requestStore;
+    private int storeId;
 
     @Size(max = 64)
     @ApiModelProperty("カラー")

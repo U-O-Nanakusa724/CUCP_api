@@ -56,8 +56,8 @@ public class CarDetailService {
     public CarDetail createCarDetail(RequestCarDetail requestCarDetail) {
 
         // マスタ存在確認
-        Car car = carRepository.getOne(requestCarDetail.getRequestCar().getId());
-        Store store = storeRepository.getOne(requestCarDetail.getRequestStore().getId());
+        Car car = carRepository.getOne(requestCarDetail.getCarId());
+        Store store = storeRepository.getOne(requestCarDetail.getStoreId());
 
         // レコード作成
         CarDetail carDetail = new CarDetail();
@@ -82,11 +82,13 @@ public class CarDetailService {
     public CarDetail updateCarDetail(RequestCarDetail requestCarDetail) {
 
         // マスタ存在確認
-        Car car = carRepository.getOne(requestCarDetail.getRequestCar().getId());
-        Store store = storeRepository.getOne(requestCarDetail.getRequestStore().getId());
+        Car car = carRepository.getOne(requestCarDetail.getCarId());
+        Store store = storeRepository.getOne(requestCarDetail.getStoreId());
 
-        // レコード作成
-        CarDetail carDetail = carDetailRepository.getOne(requestCarDetail.getId());
+        // 詳細存在確認
+        CarDetail carDetail = carDetailRepository.getOne(requestCarDetail.getDetailId());
+
+        // レコード編集
         carDetail.setCar(car);
         carDetail.setStore(store);
         carDetail.setColor(requestCarDetail.getColor());
