@@ -1,3 +1,4 @@
+import groovy.sql.Sql
 import org.yaml.snakeyaml.Yaml
 
 buildscript {
@@ -113,4 +114,35 @@ flyway {
 	password = cfg.spring."flyway-settings".password
 	schemas = ['cucp']
 	locations = ['filesystem:./flyway/sql']
+}
+
+task insertSeed {
+	doLast {
+		def cfg = new Yaml().load(new File("src/main/resources/application-dev.yml").newInputStream())
+		def mysql = buildscript.configurations.classpath.find { it.toString().contains("mysql-connector-java") }
+		URLClassLoader loader = GroovyObject.class.classLoader as URLClassLoader
+		loader.addURL(file(mysql).toURI().toURL())
+
+		def db = [url : cfg.spring."flyway-settings".url,
+				  user : cfg.spring."flyway-settings".user,
+				  password : cfg.spring."flyway-settings".password,
+				  driver  : 'com.mysql.jdbc.Driver']
+		def sql = Sql.newInstance(db.url, db.user, db.password, db.driver)
+		def sqlFiles = project.fileTree("flyway/seed")
+				.collect { it as File }
+				.findAll { it.name.endsWith '.sql' }
+				.sort()
+		sql.withBatch { stmt ->
+			sqlFiles.each { file ->
+				def sqlText = file.text.replaceAll(/--.*\n/, "").replaceAll(/\n{2,}/, "\n")
+				def i = 0
+				sqlText.split(";").each {
+					if (!(!it.trim().isEmpty() && it.trim().matches(/(?i)INSERT.*/))) return
+					stmt.addBatch(it.trim())
+					i++
+				}
+				println("SQL FILE:" + file.getName() + " : ${i}件 実行")
+			}
+		}
+	}
 }
