@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -97,6 +96,7 @@ public class CarDetailService {
         carDetail.setModelYear(requestCarDetail.getModelYear());
         carDetail.setUrl(requestCarDetail.getUrl());
         carDetail.setNote(requestCarDetail.getNote());
+        carDetail.setSoldFlag(requestCarDetail.isSoldFlag());
 
         return carDetailRepository.save(carDetail);
     }
