@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
 public class RequestCarDetail {
 
     @ApiModelProperty("ID")
-    int detailId;
+    private int detailId;
 
     @ApiModelProperty("車種ID")
     private int carId;
@@ -24,26 +25,28 @@ public class RequestCarDetail {
 
     @Size(max = 64)
     @ApiModelProperty("カラー")
-    String color;
+    private String color;
 
     @PositiveDouble
     @ApiModelProperty("走行距離")
-    double distance;
+    private String distance;
 
     @Size(max = 8)
     @ApiModelProperty("ミッション")
-    String mission;
+    private String mission;
 
     @Size(max = 8)
     @ApiModelProperty("年式")
-    String modelYear;
+    private String modelYear;
 
     @Size(max = 255)
     @ApiModelProperty("URL")
-    String url;
+    private String url;
 
     @Size(max = 64)
     @ApiModelProperty("備考")
-    String note;
+    private String note;
 
+    @ApiModelProperty("成約フラグ")
+    private boolean soldFlag;
 }

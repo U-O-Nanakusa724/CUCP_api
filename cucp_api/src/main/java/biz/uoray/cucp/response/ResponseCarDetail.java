@@ -49,7 +49,7 @@ public class ResponseCarDetail {
     private String color;
 
     @ApiModelProperty("走行距離")
-    private double distance;
+    private String distance;
 
     @ApiModelProperty("ミッション")
     private String mission;
@@ -62,6 +62,9 @@ public class ResponseCarDetail {
 
     @ApiModelProperty("備考")
     private String note;
+
+    @ApiModelProperty("成約フラグ")
+    private boolean soldFlag;
 
     @JsonProperty("prices")
     @ApiModelProperty("価格")
