@@ -111,4 +111,16 @@ public class CarDetailService {
         carDetail.setDeletedAt(new Date());
         carDetailRepository.save(carDetail);
     }
+
+    /**
+     * 指定された車種詳細に成約フラグを立てる
+     *
+     * @param detailId
+     * @return
+     */
+    public CarDetail updateSoldFlag(Integer detailId) {
+        CarDetail carDetail = carDetailRepository.getOne(detailId);
+        carDetail.setSoldFlag(true);
+        return carDetailRepository.save(carDetail);
+    }
 }
