@@ -1,11 +1,8 @@
 package biz.uoray.cucp.request;
 
-import biz.uoray.cucp.validation.PositiveDouble;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
@@ -27,7 +24,7 @@ public class RequestCarDetail {
     @ApiModelProperty("カラー")
     private String color;
 
-    @PositiveDouble
+    @Size(max = 16)
     @ApiModelProperty("走行距離")
     private String distance;
 
@@ -46,7 +43,4 @@ public class RequestCarDetail {
     @Size(max = 64)
     @ApiModelProperty("備考")
     private String note;
-
-    @ApiModelProperty("成約フラグ")
-    private boolean soldFlag;
 }
