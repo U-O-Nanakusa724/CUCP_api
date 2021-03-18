@@ -80,5 +80,18 @@ public class CarDetailController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 成約フラグ設定
+     *
+     * @param detailId
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @ApiOperation(value = "成約フラグを設定する", nickname = "setSoldFlag")
+    @PutMapping("/{id}/sold")
+    public ResponseCarDetail setSoldFlag(@PathVariable("id") Integer detailId) throws Exception {
+        return new ResponseCarDetail(carDetailService.updateSoldFlag(detailId));
+    }
 
 }
