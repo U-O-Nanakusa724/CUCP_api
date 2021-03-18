@@ -96,7 +96,6 @@ public class CarDetailService {
         carDetail.setModelYear(requestCarDetail.getModelYear());
         carDetail.setUrl(requestCarDetail.getUrl());
         carDetail.setNote(requestCarDetail.getNote());
-        carDetail.setSoldFlag(requestCarDetail.isSoldFlag());
 
         return carDetailRepository.save(carDetail);
     }
