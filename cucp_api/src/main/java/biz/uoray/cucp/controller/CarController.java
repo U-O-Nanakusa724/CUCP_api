@@ -1,5 +1,6 @@
 package biz.uoray.cucp.controller;
 
+import biz.uoray.cucp.exception.CucpNotFoundException;
 import biz.uoray.cucp.request.RequestCar;
 import biz.uoray.cucp.response.ResponseCar;
 import biz.uoray.cucp.response.ResponseCarList;
@@ -31,7 +32,7 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種一覧を取得する", nickname = "getCars")
     @GetMapping(produces = "application/json")
-    public ResponseCarList getCar() throws Exception {
+    public ResponseCarList getCar() {
         Pageable pageable = PageRequest.of(0, 20);
         return new ResponseCarList(carService.getAll(pageable));
     }
@@ -44,7 +45,7 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種情報を登録する", nickname = "createCar")
     @PostMapping("/create")
-    public ResponseCar postCar(@Validated @RequestBody RequestCar requestCar) throws Exception {
+    public ResponseCar postCar(@Validated @RequestBody RequestCar requestCar) {
         return new ResponseCar(carService.createCar(requestCar));
     }
 
@@ -56,7 +57,7 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種情報を編集する", nickname = "updateCar")
     @PutMapping("/update")
-    public ResponseCar putCar(@Validated @RequestBody RequestCar requestCar) {
+    public ResponseCar putCar(@Validated @RequestBody RequestCar requestCar) throws CucpNotFoundException {
         return new ResponseCar(carService.updateCar(requestCar));
     }
 
@@ -69,7 +70,7 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種情報を削除する", nickname = "deleteCar")
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteCar(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteCar(@PathVariable("id") Integer id) throws CucpNotFoundException {
         carService.deleteCar(id);
         return ResponseEntity.ok().build();
     }
@@ -78,7 +79,7 @@ public class CarController {
     @ApiOperation(value = "車種を検索する", nickname = "searchCars")
     @GetMapping(value = "/search", produces = "application/json")
     public ResponseCarList searchCar(@RequestParam("select") String select,
-                                     @RequestParam("keyword") String keyword) throws Exception {
+                                     @RequestParam("keyword") String keyword) {
         Pageable pageable = PageRequest.of(0, 20);
         return new ResponseCarList(carService.searchCar(pageable, select, keyword));
     }
