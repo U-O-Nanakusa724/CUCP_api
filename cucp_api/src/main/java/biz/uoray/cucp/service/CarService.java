@@ -1,6 +1,7 @@
 package biz.uoray.cucp.service;
 
 import biz.uoray.cucp.entity.Car;
+import biz.uoray.cucp.exception.CucpNotFoundException;
 import biz.uoray.cucp.repository.CarRepository;
 import biz.uoray.cucp.request.RequestCar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class CarService {
@@ -41,11 +43,10 @@ public class CarService {
      * @param requestCar
      */
     public Car updateCar(RequestCar requestCar) {
-        Car car = carRepository.getOne(requestCar.getId());
-        if (car != null) {
-            car.setCode(requestCar.getCode());
-            car.setName(requestCar.getName());
-        }
+        Car car = Optional.ofNullable(carRepository.findActiveById(requestCar.getId()))
+                .orElseThrow(() -> new CucpNotFoundException("車種が見つかりませんでした。"));
+        car.setCode(requestCar.getCode());
+        car.setName(requestCar.getName());
         return carRepository.save(car);
     }
 
@@ -55,11 +56,10 @@ public class CarService {
      * @param carId
      */
     public void deleteCar(Integer carId) {
-        Car car = carRepository.getOne(carId);
-        if (car != null) {
-            car.setDeletedAt(new Date());
-            carRepository.save(car);
-        }
+        Car car = Optional.ofNullable(carRepository.findActiveById(carId))
+                .orElseThrow(() -> new CucpNotFoundException("車種が見つかりませんでした。"));
+        car.setDeletedAt(new Date());
+        carRepository.save(car);
     }
 
     /**

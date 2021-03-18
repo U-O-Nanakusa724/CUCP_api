@@ -56,7 +56,7 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種情報を編集する", nickname = "updateCar")
     @PutMapping("/update")
-    public ResponseCar putCar(@Validated @RequestBody RequestCar requestCar) throws Exception {
+    public ResponseCar putCar(@Validated @RequestBody RequestCar requestCar) {
         return new ResponseCar(carService.updateCar(requestCar));
     }
 
