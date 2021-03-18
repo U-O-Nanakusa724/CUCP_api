@@ -1,0 +1,3 @@
+errors:
+  CarNotFound: "The car you select is not found."
+  SystemError: "There are something errors in process."
