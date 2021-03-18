@@ -1,9 +1,12 @@
 package biz.uoray.cucp.exception;
 
-public class CucpSystemException extends RuntimeException{
+public class CucpSystemException extends RuntimeException {
 
-	public CucpSystemException(String msg){
-		super(msg);
-	}
+    public CucpSystemException() {
+        this("errors.SystemError");
+    }
 
+    public CucpSystemException(String msg) {
+        super(msg);
+    }
 }

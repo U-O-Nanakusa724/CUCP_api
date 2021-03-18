@@ -1,0 +1,3 @@
+errors:
+  CarNotFound: "選択された車種が見つかりませんでした。"
+  SystemError: "何らかのエラーが発生しました。"
