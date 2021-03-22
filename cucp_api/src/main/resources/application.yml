@@ -19,6 +19,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:33062/cucp?autoReconnectForPools=true&useSSL=false&useUnicode=true&characterEncoding=utf8
     user: cucp
     password: Cucp_2020
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
 
   server:
     compression:
