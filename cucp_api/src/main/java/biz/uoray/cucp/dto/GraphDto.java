@@ -1,6 +1,5 @@
 package biz.uoray.cucp.dto;
 
-import biz.uoray.cucp.entity.CarDetail;
 import lombok.Data;
 
 import java.util.Date;

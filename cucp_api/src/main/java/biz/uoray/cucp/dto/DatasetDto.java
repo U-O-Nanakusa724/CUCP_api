@@ -10,17 +10,6 @@ import java.util.List;
 @Data
 public class DatasetDto {
 
-    public DatasetDto(CarDetail carDetail) {
-        this.label = carDetail.getCar().getCode() + " " + carDetail.getStore().getName();
-        this.data = new ArrayList<>(carDetail.getPriceList());
-        this.borderWidth = 1;
-        this.pointRadius = 5;
-        this.pointHoverRadius = 20;
-        this.pointStyle = PointStyle.CIRCLE.getStyle();
-        this.fill = false;
-        this.lineTension = 0.0;
-    }
-
     // 凡例名
     private String label;
 

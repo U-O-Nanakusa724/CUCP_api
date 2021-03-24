@@ -37,3 +37,6 @@ out/
 .vscode/
 
 logs/
+
+### CUCP ###
+src/main/resources/application-pro.yml
