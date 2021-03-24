@@ -1,10 +1,7 @@
 package biz.uoray.cucp.dto;
 
-import biz.uoray.cucp.constant.PointStyle;
-import biz.uoray.cucp.entity.CarDetail;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
