@@ -80,4 +80,19 @@ git commit -m "[add]feature/cucp-X ○○機能作成" -m "コントローラを
 - remove  ：ファイルの削除
 - clear   ：リファクタリング
 
-参考サイト:https://qiita.com/itosho/items/9565c6ad2ffc24c09364
+[参考サイト](https://qiita.com/itosho/items/9565c6ad2ffc24c09364)
+
+# .gitignoreが反映されないとき
+
+gitignoreに正しく記載したのにファイルがgit statusから消えないなどがあった場合
+
+### 【原因】
+過去に一度add, commitをされたことがある場合は  
+gitのキャッシュ内に含まれてしまうためgitignoreが反映されない。
+
+### 解決策
+下記コマンドを実行する。
+```cmd
+git rm -r --cached .
+```
+大量のremoveログが出るが、git管轄のリフレッシュをしただけなので問題なし。
