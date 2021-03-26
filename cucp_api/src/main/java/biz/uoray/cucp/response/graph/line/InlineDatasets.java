@@ -21,6 +21,7 @@ public class InlineDatasets {
         this.priceList = datasetDto.getData().stream().map(InlinePrice::new).collect(Collectors.toList());
         this.borderWidth = datasetDto.getBorderWidth();
         this.pointRadius = datasetDto.getPointRadius();
+        this.pointHoverRadius = datasetDto.getPointHoverRadius();
         this.pointStyle = datasetDto.getPointStyle();
         this.fill = datasetDto.isFill();
         this.lineTension = datasetDto.getLineTension();
