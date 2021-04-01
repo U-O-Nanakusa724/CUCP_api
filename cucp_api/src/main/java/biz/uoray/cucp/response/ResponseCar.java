@@ -14,15 +14,11 @@ public class ResponseCar {
 
     public ResponseCar(Car car) {
         this.id = car.getId();
-        this.code = car.getCode();
         this.name = car.getName();
     }
 
     @ApiModelProperty("車種ID")
     int id;
-
-    @ApiModelProperty("車種コード")
-    String code;
 
     @ApiModelProperty("車種和名")
     String name;

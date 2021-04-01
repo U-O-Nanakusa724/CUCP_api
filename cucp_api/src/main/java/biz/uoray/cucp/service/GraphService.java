@@ -58,7 +58,7 @@ public class GraphService {
                 .map(carDetail -> {
                     DatasetDto datasetDto = new DatasetDto();
                     // ラベル
-                    datasetDto.setLabel(carDetail.getCar().getCode() + " " + carDetail.getStore().getName());
+                    datasetDto.setLabel(carDetail.getGrade().getGrade() + " " + carDetail.getStore().getName());
                     // 値段データ(無効データふるい落とし＋日付順ソート)
                     List<Object> priceList = carDetail.getPriceList()
                             .stream()

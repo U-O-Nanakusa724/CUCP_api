@@ -34,7 +34,9 @@ public class CarService {
      * @param requestCar リクエスト
      */
     public Car createCar(RequestCar requestCar) {
-        return carRepository.save(new Car(requestCar.getCode(), requestCar.getName()));
+        Car car = new Car();
+        car.setName(requestCar.getName());
+        return carRepository.save(car);
     }
 
     /**
@@ -45,7 +47,6 @@ public class CarService {
     public Car updateCar(RequestCar requestCar) {
         Car car = Optional.ofNullable(carRepository.findActiveById(requestCar.getId()))
                 .orElseThrow(() -> new CucpNotFoundException("errors.CarNotFound"));
-        car.setCode(requestCar.getCode());
         car.setName(requestCar.getName());
         return carRepository.save(car);
     }
@@ -66,19 +67,11 @@ public class CarService {
      * キーワードを用いて検索した結果をページングで返す
      *
      * @param pageable ページング
-     * @param select   指定カラム名
      * @param keyword  検索ワード
      * @return Like検索後リスト(ページング付)
      */
-    public Page<Car> searchCar(Pageable pageable, String select, String keyword) {
-
-        if (select.equals("code")) {
-            return carRepository.searchByCode(pageable, keyword);
-        } else if (select.equals("name")) {
-            return carRepository.searchByName(pageable, keyword);
-        } else {
-            return carRepository.findActive(pageable);
-        }
+    public Page<Car> searchCar(Pageable pageable, String keyword) {
+        return carRepository.searchByName(pageable, keyword);
     }
 
 }

@@ -20,7 +20,7 @@ public class ResponseCarDetail {
 
     public ResponseCarDetail(CarDetail carDetail) {
         this.detailId = carDetail.getId();
-        this.responseCar = new ResponseCar(carDetail.getCar());
+        this.responseGrade = new ResponseGrade(carDetail.getGrade());
         this.responseStore = new ResponseStore(carDetail.getStore());
         this.color = carDetail.getColor();
         this.distance = carDetail.getDistance();
@@ -37,9 +37,9 @@ public class ResponseCarDetail {
     @ApiModelProperty("車種詳細ID")
     private int detailId;
 
-    @JsonProperty("car")
-    @ApiModelProperty("車種")
-    private ResponseCar responseCar;
+    @JsonProperty("grade")
+    @ApiModelProperty("グレード")
+    private ResponseGrade responseGrade;
 
     @JsonProperty("store")
     @ApiModelProperty("販売店")
