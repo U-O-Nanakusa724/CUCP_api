@@ -1,7 +1,9 @@
 package biz.uoray.cucp.service;
 
 import java.util.Date;
+import java.util.Optional;
 
+import biz.uoray.cucp.exception.CucpNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +22,8 @@ public class StoreService {
     /**
      * 有効な販売店一覧を取得する
      *
-     * @param pageable
-     * @return
+     * @param pageable ページング
+     * @return 販売店リスト(ページング付)
      */
     public Page<Store> getAll(Pageable pageable) {
         return storeRepository.findActive(pageable);
@@ -30,48 +32,45 @@ public class StoreService {
     /**
      * 販売店を１台登録する
      *
-     * @param requestStore
-     * @return
+     * @param requestStore リクエスト
      */
     public Store createStore(RequestStore requestStore) {
-    	return storeRepository.save(new Store(requestStore.getName()));
+        Store store = new Store();
+        store.setName(requestStore.getName());
+        return storeRepository.save(store);
     }
 
     /**
      * 販売店を１件更新する
      *
-     * @param requestStore
-     * @return
+     * @param requestStore リクエスト
      */
     public Store updateStore(RequestStore requestStore) {
-    	Store store = storeRepository.getOne(requestStore.getId());
-    	if(store != null) {
-    		store.setName(requestStore.getName());
-    	}
-    	return storeRepository.save(store);
+        Store store = Optional.ofNullable(storeRepository.findActiveById(requestStore.getId()))
+                .orElseThrow(() -> new CucpNotFoundException("errors.StoreNotFound"));
+        store.setName(requestStore.getName());
+        return storeRepository.save(store);
     }
 
     /**
      * 対象の販売店の削除日を設定する
      *
-     * @param storeId
+     * @param storeId 販売店ID
      */
     public void deleteStore(Integer storeId) {
-    	Store store = storeRepository.getOne(storeId);
-    	if(store != null) {
-    		store.setDeletedAt(new Date());
-    		storeRepository.save(store);
-    	}
+        Store store = Optional.ofNullable(storeRepository.findActiveById(storeId))
+                .orElseThrow(() -> new CucpNotFoundException("errors.StoreNotFound"));
+        store.setDeletedAt(new Date());
+        storeRepository.save(store);
     }
 
     /**
      * キーワードを用いて検索した結果をページングで返す
      *
-     * @param pageable
-     * @param keyword
-     * @return
+     * @param pageable ページング
+     * @param keyword  検索ワード
      */
-    public Page<Store> searchStore(Pageable pageable, String keyword){
+    public Page<Store> searchStore(Pageable pageable, String keyword) {
         return storeRepository.searchByName(pageable, keyword);
     }
 }

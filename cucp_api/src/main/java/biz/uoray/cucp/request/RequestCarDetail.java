@@ -14,8 +14,8 @@ public class RequestCarDetail {
     @ApiModelProperty("ID")
     private int detailId;
 
-    @ApiModelProperty("車種ID")
-    private int carId;
+    @ApiModelProperty("グレードID")
+    private int gradeId;
 
     @ApiModelProperty("販売店")
     private int storeId;

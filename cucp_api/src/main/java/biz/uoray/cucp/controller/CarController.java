@@ -78,9 +78,8 @@ public class CarController {
     @ResponseBody
     @ApiOperation(value = "車種を検索する", nickname = "searchCars")
     @GetMapping(value = "/search", produces = "application/json")
-    public ResponseCarList searchCar(@RequestParam("select") String select,
-                                     @RequestParam("keyword") String keyword) {
+    public ResponseCarList searchCar(@RequestParam("keyword") String keyword) {
         Pageable pageable = PageRequest.of(0, 20);
-        return new ResponseCarList(carService.searchCar(pageable, select, keyword));
+        return new ResponseCarList(carService.searchCar(pageable, keyword));
     }
 }

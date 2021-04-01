@@ -15,10 +15,6 @@ public class RequestCar {
     int id;
 
     @Size(min = 1, max = 64)
-    @ApiModelProperty("車種コード")
-    String code;
-
-    @Size(max = 64)
     @ApiModelProperty("車種和名")
     String name;
 }

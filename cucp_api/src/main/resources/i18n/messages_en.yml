@@ -1,3 +1,11 @@
 errors:
   CarNotFound: "The car you select is not found."
+  GradeNotFound: "The grade you select is not found."
+  StoreNotFound: "The store you select is not found."
+  DetailNotFound: "The detail you select is not found."
   SystemError: "There are something errors in process."
+validate:
+  NotNullValidation: "Please type anything."
+  NotBlankValidation: "Can't input blank."
+  OverMaximumStringValidation: "Please type no more than maximum count."
+  UnderMinimumStringValidation: "Please type no less than minimum count."
