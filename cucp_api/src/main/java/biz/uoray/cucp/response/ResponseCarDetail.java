@@ -1,7 +1,9 @@
 package biz.uoray.cucp.response;
 
+import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.entity.CarDetail;
 import biz.uoray.cucp.entity.Price;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +58,8 @@ public class ResponseCarDetail {
     private String mission;
 
     @ApiModelProperty("年式")
-    private String modelYear;
+    @JsonFormat(pattern = Constants.MODEL_YEAR_FORMAT, timezone = Constants.JST)
+    private Date modelYear;
 
     @ApiModelProperty("URL")
     private String url;
