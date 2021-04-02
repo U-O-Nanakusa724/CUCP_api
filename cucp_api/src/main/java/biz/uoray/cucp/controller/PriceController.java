@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @Controller
 @RequestMapping(path = "/v1/price")
-@Api(value = "価格コントローラ", tags = "PriceController", produces = "application/json")
+@Api(value = "価格API", tags = "PriceApi", produces = "application/json")
 public class PriceController {
 
     @Autowired

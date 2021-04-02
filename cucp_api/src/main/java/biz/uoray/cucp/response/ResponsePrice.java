@@ -1,5 +1,6 @@
 package biz.uoray.cucp.response;
 
+import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.entity.Price;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -31,7 +32,7 @@ public class ResponsePrice {
     @ApiModelProperty("価格")
     private double price;
 
-    @JsonFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = Constants.PRICE_FORMAT, timezone = Constants.JST)
     @ApiModelProperty("日時")
     private Date date;
 

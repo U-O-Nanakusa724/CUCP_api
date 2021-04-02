@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @Controller
 @RequestMapping(path = "/v1/cars")
-@Api(value = "車種コントローラ", tags = "CarController", produces = "application/json")
+@Api(value = "車種API", tags = "CarApi", produces = "application/json")
 public class CarController {
 
     @Autowired
@@ -26,8 +26,6 @@ public class CarController {
 
     /**
      * 車種一覧表示
-     *
-     * @return 車種一覧
      */
     @ResponseBody
     @ApiOperation(value = "車種一覧を取得する", nickname = "getCars")
@@ -39,8 +37,6 @@ public class CarController {
 
     /**
      * 車種新規登録
-     *
-     * @return
      */
     @ResponseBody
     @ApiOperation(value = "車種情報を登録する", nickname = "createCar")
@@ -51,8 +47,6 @@ public class CarController {
 
     /**
      * 車種編集
-     *
-     * @return
      */
     @ResponseBody
     @ApiOperation(value = "車種情報を編集する", nickname = "updateCar")
@@ -63,9 +57,6 @@ public class CarController {
 
     /**
      * 車種１件削除
-     *
-     * @param id
-     * @return
      */
     @ResponseBody
     @ApiOperation(value = "車種情報を削除する", nickname = "deleteCar")
@@ -75,6 +66,9 @@ public class CarController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 車種検索
+     */
     @ResponseBody
     @ApiOperation(value = "車種を検索する", nickname = "searchCars")
     @GetMapping(value = "/search", produces = "application/json")

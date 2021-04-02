@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @Controller
 @RequestMapping(path = "/v1/graph")
-@Api(value = "グラフコントローラ", tags = "GraphController", produces = "application/json")
+@Api(value = "グラフAPI", tags = "GraphApi", produces = "application/json")
 public class GraphController {
 
     @Autowired

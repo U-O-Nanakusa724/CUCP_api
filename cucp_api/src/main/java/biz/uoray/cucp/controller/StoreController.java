@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Controller
 @RequestMapping("/v1/stores")
-@Api(value = "販売店コントローラ", tags = "StoreController", produces = "application/json")
+@Api(value = "販売店API", tags = "StoreApi", produces = "application/json")
 public class StoreController {
 
     @Autowired

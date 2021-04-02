@@ -1,11 +1,14 @@
 package biz.uoray.cucp.request;
 
+import biz.uoray.cucp.constant.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -32,9 +35,9 @@ public class RequestCarDetail {
     @ApiModelProperty("ミッション")
     private String mission;
 
-    @Size(max = 8)
     @ApiModelProperty("年式")
-    private String modelYear;
+    @JsonFormat(pattern = Constants.MODEL_YEAR_FORMAT, timezone = Constants.JST)
+    private Date modelYear;
 
     @Size(max = 255)
     @ApiModelProperty("URL")
