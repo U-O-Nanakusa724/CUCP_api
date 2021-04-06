@@ -3,6 +3,7 @@ package biz.uoray.cucp.service;
 import biz.uoray.cucp.entity.*;
 import biz.uoray.cucp.exception.CucpNotFoundException;
 import biz.uoray.cucp.repository.CarDetailRepository;
+import biz.uoray.cucp.repository.ColorRepository;
 import biz.uoray.cucp.repository.GradeRepository;
 import biz.uoray.cucp.repository.StoreRepository;
 import biz.uoray.cucp.request.RequestCarDetail;
@@ -24,6 +25,9 @@ public class CarDetailService {
 
     @Autowired
     StoreRepository storeRepository;
+
+    @Autowired
+    ColorRepository colorRepository;
 
     @Autowired
     CarDetailRepository carDetailRepository;
@@ -57,12 +61,14 @@ public class CarDetailService {
                 .orElseThrow(() -> new CucpNotFoundException("errors.GradeNotFound"));
         Store store = Optional.ofNullable(storeRepository.findActiveById(requestCarDetail.getStoreId()))
                 .orElseThrow(() -> new CucpNotFoundException("errors.StoreNotFound"));
+        Color color = Optional.ofNullable(colorRepository.findActiveById(requestCarDetail.getColorId()))
+                .orElseThrow(() -> new CucpNotFoundException("errors.ColorNotFound"));
 
         // レコード作成
         CarDetail carDetail = new CarDetail();
         carDetail.setGrade(grade);
         carDetail.setStore(store);
-        carDetail.setColor(requestCarDetail.getColor());
+        carDetail.setColor(color);
         carDetail.setDistance(requestCarDetail.getDistance());
         carDetail.setMission(requestCarDetail.getMission());
         carDetail.setModelYear(requestCarDetail.getModelYear());
@@ -84,6 +90,8 @@ public class CarDetailService {
                 .orElseThrow(() -> new CucpNotFoundException("errors.GradeNotFound"));
         Store store = Optional.ofNullable(storeRepository.findActiveById(requestCarDetail.getStoreId()))
                 .orElseThrow(() -> new CucpNotFoundException("errors.StoreNotFound"));
+        Color color = Optional.ofNullable(colorRepository.findActiveById(requestCarDetail.getColorId()))
+                .orElseThrow(() -> new CucpNotFoundException("errors.ColorNotFound"));
 
         // 詳細存在確認
         CarDetail carDetail = Optional.ofNullable(carDetailRepository.findActiveById(requestCarDetail.getDetailId()))
@@ -92,7 +100,7 @@ public class CarDetailService {
         // レコード編集
         carDetail.setGrade(grade);
         carDetail.setStore(store);
-        carDetail.setColor(requestCarDetail.getColor());
+        carDetail.setColor(color);
         carDetail.setDistance(requestCarDetail.getDistance());
         carDetail.setMission(requestCarDetail.getMission());
         carDetail.setModelYear(requestCarDetail.getModelYear());

@@ -25,7 +25,7 @@ public class ResponseCarDetail {
         this.detailId = carDetail.getId();
         this.responseGrade = new ResponseGrade(carDetail.getGrade());
         this.responseStore = new ResponseStore(carDetail.getStore());
-        this.color = carDetail.getColor();
+        this.responseColor = new ResponseColor(carDetail.getColor());
         this.distance = carDetail.getDistance();
         this.mission = carDetail.getMission();
         this.modelYear = carDetail.getModelYear();
@@ -48,8 +48,9 @@ public class ResponseCarDetail {
     @ApiModelProperty("販売店")
     private ResponseStore responseStore;
 
+    @JsonProperty("color")
     @ApiModelProperty("カラー")
-    private String color;
+    private ResponseColor responseColor;
 
     @ApiModelProperty("走行距離")
     private String distance;
