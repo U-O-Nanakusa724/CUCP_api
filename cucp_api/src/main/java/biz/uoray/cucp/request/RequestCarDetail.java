@@ -23,9 +23,8 @@ public class RequestCarDetail {
     @ApiModelProperty("販売店")
     private int storeId;
 
-    @Size(max = 64)
     @ApiModelProperty("カラー")
-    private String color;
+    private int colorId;
 
     @Size(max = 16)
     @ApiModelProperty("走行距離")

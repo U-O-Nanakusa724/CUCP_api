@@ -2,6 +2,7 @@ errors:
   CarNotFound: "選択された車種が見つかりませんでした。"
   GradeNotFound: "選択されたグレードが見つかりませんでした。"
   StoreNotFound: "選択された販売店が見つかりませんでした。"
+  ColorNotFound: "選択された色が見つかりませんでした。"
   DetailNotFound: "選択された車種が見つかりませんでした。"
   PriceNotFound: "選択された価格データが見つかりませんでした。"
   SystemError: "何らかのエラーが発生しました。"

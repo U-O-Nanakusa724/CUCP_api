@@ -2,6 +2,7 @@ errors:
   CarNotFound: "The car you select is not found."
   GradeNotFound: "The grade you select is not found."
   StoreNotFound: "The store you select is not found."
+  ColorNotFound: "The color you select is not found."
   DetailNotFound: "The detail you select is not found."
   SystemError: "There are something errors in process."
 validate:
