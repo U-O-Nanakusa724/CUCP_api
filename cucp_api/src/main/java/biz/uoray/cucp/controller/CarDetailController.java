@@ -1,5 +1,21 @@
 package biz.uoray.cucp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import biz.uoray.cucp.exception.CucpNotFoundException;
 import biz.uoray.cucp.request.RequestCarDetail;
 import biz.uoray.cucp.response.ResponseCarDetail;
@@ -7,13 +23,6 @@ import biz.uoray.cucp.response.ResponseCarDetailList;
 import biz.uoray.cucp.service.CarDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @Controller
@@ -74,8 +83,8 @@ public class CarDetailController {
     @ApiOperation(value = "車種詳細を削除する", nickname = "deleteCarDetail")
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteCarDetail(
-            @PathVariable("id") Integer id) throws CucpNotFoundException {
-        carDetailService.deleteCarDetail(id);
+            @PathVariable("id") Integer detailId) throws CucpNotFoundException {
+        carDetailService.deleteCarDetail(detailId);
         return ResponseEntity.ok().build();
     }
 

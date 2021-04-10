@@ -1,6 +1,5 @@
 package biz.uoray.cucp.controller;
 
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +21,7 @@ import biz.uoray.cucp.request.RequestStore;
 import biz.uoray.cucp.response.ResponseStore;
 import biz.uoray.cucp.response.ResponseStoreList;
 import biz.uoray.cucp.service.StoreService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
@@ -84,8 +84,8 @@ public class StoreController {
     @ResponseBody
     @ApiOperation(value = "販売店を削除する", nickname = "deleteStores")
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteStore(@PathVariable("id") Integer id) throws Exception {
-        storeService.deleteStore(id);
+    public ResponseEntity<Void> deleteStore(@PathVariable("id") Integer storeId) throws Exception {
+        storeService.deleteStore(storeId);
         return ResponseEntity.ok().build();
     }
 
