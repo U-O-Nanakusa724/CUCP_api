@@ -32,7 +32,7 @@ public class ResponsePrice {
     @ApiModelProperty("価格")
     private double price;
 
-    @JsonFormat(pattern = Constants.PRICE_FORMAT, timezone = Constants.JST)
+    @JsonFormat(pattern = Constants.SIMPLE_DATE_FORMAT, timezone = Constants.JST)
     @ApiModelProperty("日時")
     private Date date;
 
