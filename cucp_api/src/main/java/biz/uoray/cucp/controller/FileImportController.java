@@ -1,5 +1,7 @@
 package biz.uoray.cucp.controller;
 
+import biz.uoray.cucp.dto.CsvDataDto;
+import biz.uoray.cucp.dto.CsvResultDto;
 import biz.uoray.cucp.response.ResponseReadResult;
 import biz.uoray.cucp.service.FileImportService;
 import io.swagger.annotations.Api;
@@ -22,6 +24,7 @@ public class FileImportController {
     @ApiOperation(value = "CSVファイルを読み込む", nickname = "readCSV")
     @PostMapping("/readCSV")
     public ResponseReadResult read(@RequestParam("csv") MultipartFile csv) {
-        return fileImportService.readCsvAndReturnDataList(csv);
+        CsvResultDto csvResultDto= fileImportService.readCsvAndReturnDataList(csv);
+        return new ResponseReadResult(fileImportService.createNewDetails(csvResultDto));
     }
 }

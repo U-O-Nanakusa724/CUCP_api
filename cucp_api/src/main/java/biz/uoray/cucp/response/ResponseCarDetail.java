@@ -38,7 +38,7 @@ public class ResponseCarDetail {
     }
 
     @ApiModelProperty("車種詳細ID")
-    private int detailId;
+    private Integer detailId;
 
     @JsonProperty("grade")
     @ApiModelProperty("グレード")
