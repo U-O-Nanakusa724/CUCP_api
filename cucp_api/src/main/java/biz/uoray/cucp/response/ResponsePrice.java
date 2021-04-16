@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,19 +19,20 @@ public class ResponsePrice {
 
     public ResponsePrice(Price price) {
         this.priceId = price.getId();
-        this.detailId = price.getCarDetail().getId();
+        this.detailId = price.getCarDetail() == null ? null :
+                price.getCarDetail().getId();
         this.price = price.getPrice();
         this.date = price.getDate();
     }
 
     @ApiModelProperty("価格ID")
-    int priceId;
+    Integer priceId;
 
     @ApiModelProperty("車種詳細ID")
-    int detailId;
+    Integer detailId;
 
     @ApiModelProperty("価格")
-    private double price;
+    private Double price;
 
     @JsonFormat(pattern = Constants.SIMPLE_DATE_FORMAT, timezone = Constants.JST)
     @ApiModelProperty("日時")

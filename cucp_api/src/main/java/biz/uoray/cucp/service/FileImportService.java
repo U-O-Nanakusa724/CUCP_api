@@ -2,16 +2,11 @@ package biz.uoray.cucp.service;
 
 import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.dto.CsvDataDto;
-import biz.uoray.cucp.entity.Car;
-import biz.uoray.cucp.entity.CarDetail;
-import biz.uoray.cucp.entity.Grade;
-import biz.uoray.cucp.entity.Store;
+import biz.uoray.cucp.dto.CsvResultDto;
+import biz.uoray.cucp.entity.*;
+import biz.uoray.cucp.exception.CucpBadRequestException;
 import biz.uoray.cucp.exception.CucpSystemException;
-import biz.uoray.cucp.repository.CarRepository;
-import biz.uoray.cucp.repository.ColorRepository;
-import biz.uoray.cucp.repository.GradeRepository;
-import biz.uoray.cucp.repository.StoreRepository;
-import biz.uoray.cucp.response.ResponseReadResult;
+import biz.uoray.cucp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,11 +16,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
+import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FileImportService {
@@ -42,17 +41,30 @@ public class FileImportService {
     @Autowired
     ColorRepository colorRepository;
 
-    @Transactional
-    public ResponseReadResult readCsvAndReturnDataList(MultipartFile file) {
+    @Autowired
+    CarDetailRepository carDetailRepository;
 
+    /**
+     * 各マスタデータを先に保存する.
+     * @param file CSV
+     * @return 読み込んで生成したDTOと各マスタリスト
+     */
+    @Transactional
+    public CsvResultDto readCsvAndReturnDataList(MultipartFile file) {
+
+        // 読み込んだ結果を格納するリスト
+        CsvResultDto csvResultDto = new CsvResultDto();
+
+        // CSVをテータ化したDTOリスト
         List<CsvDataDto> csvDataDtoList = createDto(file);
 
-        List<Car> newCarList = createNewCars(csvDataDtoList);
-        List<Grade> newGradeList = createNewGrades(csvDataDtoList);
-        List<Store> newStoreList = createNewStores(csvDataDtoList);
-        List<CarDetail> newCarDetailList = createNewDetails(csvDataDtoList);
+        csvResultDto.setCsvDataDtoList(csvDataDtoList);
+        csvResultDto.setNewCarList(createNewCars(csvDataDtoList));
+        csvResultDto.setNewGradeList(createNewGrades(csvDataDtoList));
+        csvResultDto.setNewStoreList(createNewStores(csvDataDtoList));
+        csvResultDto.setNewColorList(createNewColors(csvDataDtoList));
 
-        return new ResponseReadResult(newCarList, newGradeList, newStoreList, newCarDetailList);
+        return csvResultDto;
     }
 
     /**
@@ -92,16 +104,17 @@ public class FileImportService {
                             csvDataDto.setMission(split[index]);
                             break;
                         case COLOR:
-                            csvDataDto.setColorLabel(split[index]);
+                            csvDataDto.setColorLabel(split[index].trim());
                             break;
                         case PRICE:
                             csvDataDto.setPrice(Double.parseDouble(split[index]));
                             break;
                         case MODEL_YEAR:
-                            String localDateString = String.format("%s/01/01", split[index]);
-                            LocalDate localDate = LocalDate.parse(localDateString,
-                                    DateTimeFormatter.ofPattern(Constants.SIMPLE_DATE_FORMAT));
-                            csvDataDto.setModelYear(localDate);
+                            String localDateString = String.format("%s/01/01 00:00:00", split[index]);
+                            LocalDateTime localDateTime = LocalDateTime.parse(localDateString,
+                                    DateTimeFormatter.ofPattern(Constants.SIMPLE_DATETIME_FORMAT));
+                            ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, Constants.JST_ZONE_ID);
+                            csvDataDto.setModelYear(Date.from(zonedDateTime.toInstant()));
                             break;
                         case DISTANCE:
                             csvDataDto.setDistance(split[index]);
@@ -112,7 +125,11 @@ public class FileImportService {
                         case NOTE:
                             // TODO note項目からgrade切り出しOK,他のデータは現在破棄
                             String[] grade = split[index].split(" ");
-                            csvDataDto.setGrade(String.format("%s %s",grade[0],grade[1]));
+                            if (grade.length > 1) {
+                                csvDataDto.setGrade(String.format("%s %s", grade[0], grade[1]));
+                            } else {
+                                csvDataDto.setGrade(grade[0]);
+                            }
                             break;
                         case URL:
                             csvDataDto.setUrl(split[index]);
@@ -153,6 +170,12 @@ public class FileImportService {
         return newCarList;
     }
 
+    /**
+     * DTOのグレード名から既存チェック、なければ新規登録し追加リストに加える
+     *
+     * @param csvDtoList 読み込んだCSVリスト
+     * @return 新規登録グレードリスト
+     */
     @Transactional
     private List<Grade> createNewGrades(List<CsvDataDto> csvDtoList) {
         // 受け取ったList<DTO>に対し、グレードの既存チェック、なかった場合は新規に追加して新規リストに格納
@@ -162,11 +185,13 @@ public class FileImportService {
             Grade grade = gradeRepository.findActiveByGradeAndCarName(csvDataDto.getGrade(), csvDataDto.getCarName()).orElse(null);
 
             if (grade == null) {
-                Grade newGrade = new Grade();
-                Car car = carRepository.findActiveByName(csvDataDto.getCarName()).orElseThrow(() -> new CucpSystemException(""));
-                newGrade.setCar(car);
-                newGrade.setGrade(csvDataDto.getGrade());
-                newGradeList.add(gradeRepository.save(newGrade));
+                grade = new Grade();
+                // システムの処理順番的にここで車種が見つからないのはシステムエラー
+                Car car = carRepository.findActiveByName(csvDataDto.getCarName())
+                        .orElseThrow(() -> new CucpSystemException(""));
+                grade.setCar(car);
+                grade.setGrade(csvDataDto.getGrade());
+                newGradeList.add(gradeRepository.save(grade));
             }
         });
         return newGradeList;
@@ -180,32 +205,91 @@ public class FileImportService {
      */
     @Transactional
     private List<Store> createNewStores(List<CsvDataDto> csvDtoList) {
-        // 受け取ったList<DTO>に対し、車種の既存チェック、なかった場合は新規に追加して新規リストに格納
+        // 受け取ったList<DTO>に対し、販売店の既存チェック、なかった場合は新規に追加して新規リストに格納
         List<Store> newStoreList = new ArrayList<>();
 
         csvDtoList.forEach(csvDataDto -> {
             Store store = storeRepository.findActiveByName(csvDataDto.getStoreName()).orElse(null);
 
             if (store == null) {
-                Store newStore = new Store();
-                newStore.setName(csvDataDto.getStoreName());
-                newStoreList.add(storeRepository.save(newStore));
+                store = new Store();
+                store.setName(csvDataDto.getStoreName());
+                newStoreList.add(storeRepository.save(store));
             }
         });
         return newStoreList;
     }
 
+    /**
+     * DTOの色名から既存チェック、なければ新規登録し追加リストに加える
+     *
+     * @param csvDtoList 読み込んだCSVリスト
+     * @return 新規登録販売店リスト
+     */
     @Transactional
-    private List<CarDetail> createNewDetails(List<CsvDataDto> csvDtoList) {
+    private List<Color> createNewColors(List<CsvDataDto> csvDtoList) {
+        // 受け取ったList<DTO>に対し、色の既存チェック、なかった場合は新規に追加して新規リストに格納
+        List<Color> newColorList = new ArrayList<>();
+
+        csvDtoList.forEach(csvDataDto -> {
+            Color color = colorRepository.findActiveByLabel(csvDataDto.getColorLabel()).orElse(null);
+
+            if (color == null) {
+                color = new Color();
+                color.setLabel(csvDataDto.getColorLabel());
+                newColorList.add(colorRepository.save(color));
+            }
+        });
+        return newColorList;
+    }
+
+    public CsvResultDto createNewDetails(CsvResultDto csvResultDto) {
 
         List<CarDetail> newCarDetailList = new ArrayList<>();
-        // TODO 未着手
-        // 既存チェック(グレード、年式、距離、色の４つをWHEREに入れて取得)を行い、
-        // A. CarDetailが存在する(Nullじゃなかった)→それを用いてPriceエンティティを作成、登録(価格だけ登録)
-        // B. 存在しない→CarDetailとPriceを作成
-        // C. ２件以上検索に引っかかった場合→どちらの車種に取り込むか選択できるようにする
-        // それをリストに入れてコントローラに返す
-        return newCarDetailList;
+        csvResultDto.getCsvDataDtoList().forEach(csvDataDto -> {
+            // 各マスタ取得、この時点でマスタがない場合システム的におかしいのでエラーをスロー
+            Grade grade = gradeRepository.findActiveByGradeAndCarName(csvDataDto.getGrade(), csvDataDto.getCarName())
+                    .orElseThrow(() ->  new CucpSystemException(""));
+            Store store = storeRepository.findActiveByName(csvDataDto.getStoreName())
+                    .orElseThrow(() ->  new CucpSystemException(""));
+            Color color = colorRepository.findActiveByLabel(csvDataDto.getColorLabel())
+                    .orElseThrow(() ->  new CucpSystemException(""));
+
+            List<CarDetail> targetDetailList = carDetailRepository.findTarget(grade,store, color, csvDataDto.getModelYear(), csvDataDto.getDistance());
+            CarDetail carDetail = null;
+            Price price = new Price();
+            if (targetDetailList.size() == 1) {
+                // 検索結果が１件だけである場合
+                carDetail = targetDetailList.get(0);
+                price.setPrice(csvDataDto.getPrice());
+                price.setDate(new Date());
+                carDetail.getPriceList().add(price);
+            } else if(targetDetailList.size() == 0) {
+                // 検索結果が０件である場合
+                carDetail = new CarDetail();
+                carDetail.setGrade(grade);
+                carDetail.setStore(store);
+                carDetail.setColor(color);
+                carDetail.setDistance(Optional.ofNullable(csvDataDto.getDistance()).orElse(null));
+                carDetail.setMission(Optional.ofNullable(csvDataDto.getMission()).orElse(null));
+                carDetail.setModelYear(Optional.ofNullable(csvDataDto.getModelYear()).orElse(null));
+                carDetail.setUrl(Optional.ofNullable(csvDataDto.getUrl()).orElse(null));
+                carDetail.setNote(Optional.ofNullable(csvDataDto.getNote()).orElse(null));
+
+                price.setPrice(csvDataDto.getPrice());
+                price.setDate(new Date());
+                List<Price> priceList = new ArrayList<>();
+                priceList.add(price);
+                carDetail.setPriceList(priceList);
+            } else {
+                // ２件以上引っかかった場合はロジックでは判定不可能なので警告
+                throw new CucpBadRequestException("errors.csv.DetailIdentification");
+            }
+            newCarDetailList.add(carDetail);
+        });
+
+        csvResultDto.setNewCarDetailList(newCarDetailList);
+        return csvResultDto;
     }
 //
 //    createCarDetail(Request request) {
