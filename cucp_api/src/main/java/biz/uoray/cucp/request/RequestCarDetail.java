@@ -15,16 +15,16 @@ import java.util.Date;
 public class RequestCarDetail {
 
     @ApiModelProperty("ID")
-    private int detailId;
+    private Integer detailId;
 
     @ApiModelProperty("グレードID")
-    private int gradeId;
+    private Integer gradeId;
 
     @ApiModelProperty("販売店")
-    private int storeId;
+    private Integer storeId;
 
     @ApiModelProperty("カラー")
-    private int colorId;
+    private Integer colorId;
 
     @Size(max = 16)
     @ApiModelProperty("走行距離")

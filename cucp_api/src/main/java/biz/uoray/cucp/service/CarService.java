@@ -45,7 +45,7 @@ public class CarService {
      * @param requestCar リクエスト
      */
     public Car updateCar(RequestCar requestCar) {
-        Car car = Optional.ofNullable(carRepository.findActiveById(requestCar.getId()))
+        Car car = Optional.ofNullable(carRepository.findActiveById(requestCar.getCarId()))
                 .orElseThrow(() -> new CucpNotFoundException("errors.CarNotFound"));
         car.setName(requestCar.getName());
         return carRepository.save(car);

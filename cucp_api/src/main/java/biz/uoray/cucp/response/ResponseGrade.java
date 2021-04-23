@@ -20,7 +20,7 @@ public class ResponseGrade {
     }
 
     @ApiModelProperty("グレードID")
-    private int gradeId;
+    private Integer gradeId;
 
     @JsonProperty("car")
     @ApiModelProperty("車種")

@@ -13,12 +13,12 @@ import lombok.Data;
 public class ResponseCar {
 
     public ResponseCar(Car car) {
-        this.id = car.getId();
+        this.carId = car.getId();
         this.name = car.getName();
     }
 
     @ApiModelProperty("車種ID")
-    int id;
+    Integer carId;
 
     @ApiModelProperty("車種和名")
     String name;

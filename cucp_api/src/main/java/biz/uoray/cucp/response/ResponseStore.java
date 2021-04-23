@@ -13,12 +13,12 @@ import lombok.Data;
 public class ResponseStore {
 
     public ResponseStore(Store store){
-        this.id = store.getId();
+        this.storeId = store.getId();
         this.name = store.getName();
     }
 
     @ApiModelProperty("販売店ID")
-    int id;
+    Integer storeId;
 
     @ApiModelProperty("販売店名")
     String name;

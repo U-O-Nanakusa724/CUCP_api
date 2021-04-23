@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 public class RequestCar {
 
     @ApiModelProperty("ID")
-    int id;
+    Integer carId;
 
     @Size(min = 1, max = 64)
     @ApiModelProperty("車種和名")

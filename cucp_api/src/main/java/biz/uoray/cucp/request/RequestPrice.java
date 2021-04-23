@@ -15,14 +15,14 @@ import java.util.Date;
 public class RequestPrice {
 
     @ApiModelProperty("価格ID")
-    private int priceId;
+    private Integer priceId;
 
     @ApiModelProperty("車種詳細ID")
-    private int detailId;
+    private Integer detailId;
 
     @PositiveDouble
     @ApiModelProperty("価格")
-    private double price;
+    private Double price;
 
     @JsonFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty("日付")

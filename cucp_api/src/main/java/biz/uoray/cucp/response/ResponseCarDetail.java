@@ -14,6 +14,7 @@ import lombok.Data;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -31,10 +32,16 @@ public class ResponseCarDetail {
         this.modelYear = carDetail.getModelYear();
         this.url = carDetail.getUrl();
         this.note = carDetail.getNote();
-        this.priceList = carDetail.getPriceList() == null ? null : carDetail.getPriceList().stream()
-                .sorted(Comparator.comparing(Price::getDate).reversed())
-                .map(ResponsePrice::new)
-                .collect(Collectors.toList());
+        Optional.ofNullable(carDetail.getPriceList()).ifPresent(prices -> {
+            if (prices.size() > 0) {
+                this.lastPrice = prices.get(0).getPrice();
+                this.lastDate = prices.get(0).getDate();
+            }
+            this.priceList = prices.stream()
+                    .sorted(Comparator.comparing(Price::getDate).reversed())
+                    .map(ResponsePrice::new)
+                    .collect(Collectors.toList());
+        });
     }
 
     @ApiModelProperty("車種詳細ID")
@@ -68,8 +75,15 @@ public class ResponseCarDetail {
     @ApiModelProperty("備考")
     private String note;
 
+    @ApiModelProperty("最新価格")
+    private Double lastPrice;
+
+    @JsonFormat(pattern = Constants.SIMPLE_DATE_FORMAT, timezone = Constants.JST)
+    @ApiModelProperty("最新確認日")
+    private Date lastDate;
+
     @ApiModelProperty("成約フラグ")
-    private boolean soldFlag;
+    private Boolean soldFlag;
 
     @JsonProperty("prices")
     @ApiModelProperty("価格")

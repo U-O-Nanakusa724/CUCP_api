@@ -1,6 +1,5 @@
 package biz.uoray.cucp.controller;
 
-import biz.uoray.cucp.dto.CsvDataDto;
 import biz.uoray.cucp.dto.CsvResultDto;
 import biz.uoray.cucp.response.ResponseReadResult;
 import biz.uoray.cucp.service.FileImportService;
@@ -13,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @Controller
-@RequestMapping(path = "/v1/cars")
+@RequestMapping(path = "/v1/files")
 @Api(value = "ファイル取り込みAPI", tags = "FileImportApi", produces = "application/json")
 public class FileImportController {
 

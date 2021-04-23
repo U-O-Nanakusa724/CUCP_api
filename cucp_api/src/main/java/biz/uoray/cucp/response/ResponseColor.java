@@ -21,7 +21,7 @@ public class ResponseColor {
     }
 
     @ApiModelProperty("ID")
-    private int colorId;
+    private Integer colorId;
 
     @ApiModelProperty("色名")
     private String label;
