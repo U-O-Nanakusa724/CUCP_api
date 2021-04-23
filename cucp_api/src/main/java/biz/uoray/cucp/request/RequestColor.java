@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 public class RequestColor {
 
     @ApiModelProperty("ID")
-    private int colorId;
+    private Integer colorId;
 
     @Size(max = 16)
     @ApiModelProperty("色名")

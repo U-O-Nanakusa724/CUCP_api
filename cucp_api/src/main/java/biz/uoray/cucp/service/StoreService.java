@@ -46,7 +46,7 @@ public class StoreService {
      * @param requestStore リクエスト
      */
     public Store updateStore(RequestStore requestStore) {
-        Store store = Optional.ofNullable(storeRepository.findActiveById(requestStore.getId()))
+        Store store = Optional.ofNullable(storeRepository.findActiveById(requestStore.getStoreId()))
                 .orElseThrow(() -> new CucpNotFoundException("errors.StoreNotFound"));
         store.setName(requestStore.getName());
         return storeRepository.save(store);

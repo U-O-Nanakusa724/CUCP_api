@@ -14,11 +14,11 @@ import javax.validation.constraints.Size;
 public class RequestGrade {
 
     @ApiModelProperty("ID")
-    int gradeId;
+    Integer gradeId;
 
     @ApiModelProperty("車種ID")
     @NotNull
-    int carId;
+    Integer carId;
 
     @Size(min = 1, max = 64)
     @NotNull
