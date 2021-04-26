@@ -17,9 +17,20 @@ import java.util.stream.Collectors;
 @ApiModel("車種詳細一覧")
 public class ResponseCarDetailList {
 
+    /**
+     * @param carDetails ページング付コンストラクタ
+     */
     public ResponseCarDetailList(Page<CarDetail> carDetails) {
         this.carDetailList = carDetails.getContent().stream().map(ResponseCarDetail::new).collect(Collectors.toList());
         this.responsePageable = new ResponsePageable(carDetails);
+    }
+
+    /**
+     * @param carDetails ページングなしのコンストラクタ
+     */
+    public ResponseCarDetailList(List<CarDetail> carDetails) {
+        this.carDetailList = carDetails.stream().map(ResponseCarDetail::new).collect(Collectors.toList());
+        this.responsePageable = null;
     }
 
     @JsonProperty("carDetails")

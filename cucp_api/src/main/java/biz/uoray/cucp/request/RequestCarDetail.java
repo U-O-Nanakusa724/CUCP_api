@@ -1,6 +1,7 @@
 package biz.uoray.cucp.request;
 
 import biz.uoray.cucp.constant.Constants;
+import biz.uoray.cucp.validation.PositiveDouble;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -45,4 +46,12 @@ public class RequestCarDetail {
     @Size(max = 64)
     @ApiModelProperty("備考")
     private String note;
+
+    @PositiveDouble
+    @ApiModelProperty("最新価格")
+    private Double lastPrice;
+
+    @JsonFormat(pattern = "yyyy/MM/dd")
+    @ApiModelProperty("最終確認日")
+    private Date lastDate;
 }
