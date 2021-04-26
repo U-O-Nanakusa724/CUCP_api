@@ -18,6 +18,12 @@ public class ResponsePageable {
         this.totalElements = page.getTotalElements();
     }
 
+    public ResponsePageable() {
+        this.page = 0;
+        this.totalPages = 0;
+        this.totalElements = 0;
+    }
+
     @ApiModelProperty("ページ")
     private long page;
 

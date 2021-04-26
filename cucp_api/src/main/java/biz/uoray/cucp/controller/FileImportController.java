@@ -1,6 +1,8 @@
 package biz.uoray.cucp.controller;
 
 import biz.uoray.cucp.dto.CsvResultDto;
+import biz.uoray.cucp.request.RequestCsvResult;
+import biz.uoray.cucp.response.ResponseCarDetailList;
 import biz.uoray.cucp.response.ResponseReadResult;
 import biz.uoray.cucp.service.FileImportService;
 import io.swagger.annotations.Api;
@@ -26,4 +28,12 @@ public class FileImportController {
         CsvResultDto csvResultDto= fileImportService.readCsvAndReturnDataList(csv);
         return new ResponseReadResult(fileImportService.createNewDetails(csvResultDto));
     }
+
+    @ResponseBody
+    @ApiOperation(value = "CSVから取り込み編集し終えた車種詳細を登録する", nickname = "saveCSV")
+    @PostMapping("/saveCSV")
+    public ResponseCarDetailList postCsv(@RequestBody RequestCsvResult requestCsvResult) {
+        return new ResponseCarDetailList(fileImportService.saveNewDetails(requestCsvResult));
+    }
+
 }

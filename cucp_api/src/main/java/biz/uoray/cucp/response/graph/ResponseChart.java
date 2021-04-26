@@ -1,5 +1,6 @@
 package biz.uoray.cucp.response.graph;
 
+import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.dto.GraphDto;
 import biz.uoray.cucp.response.graph.line.InlineDatasets;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,7 +26,7 @@ public class ResponseChart {
                 .collect(Collectors.toList());
     }
 
-    @JsonFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = Constants.JST)
     @JsonProperty("labels")
     private List<Date> labels;
 

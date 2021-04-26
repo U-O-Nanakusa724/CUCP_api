@@ -7,6 +7,7 @@ import biz.uoray.cucp.entity.*;
 import biz.uoray.cucp.exception.CucpBadRequestException;
 import biz.uoray.cucp.exception.CucpSystemException;
 import biz.uoray.cucp.repository.*;
+import biz.uoray.cucp.request.RequestCsvResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,8 +45,12 @@ public class FileImportService {
     @Autowired
     CarDetailRepository carDetailRepository;
 
+    @Autowired
+    PriceRepository priceRepository;
+
     /**
      * 各マスタデータを先に保存する.
+     *
      * @param file CSV
      * @return 読み込んで生成したDTOと各マスタリスト
      */
@@ -249,14 +254,14 @@ public class FileImportService {
         csvResultDto.getCsvDataDtoList().forEach(csvDataDto -> {
             // 各マスタ取得、この時点でマスタがない場合システム的におかしいのでエラーをスロー
             Grade grade = gradeRepository.findActiveByGradeAndCarName(csvDataDto.getGrade(), csvDataDto.getCarName())
-                    .orElseThrow(() ->  new CucpSystemException(""));
+                    .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
             Store store = storeRepository.findActiveByName(csvDataDto.getStoreName())
-                    .orElseThrow(() ->  new CucpSystemException(""));
+                    .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
             Color color = colorRepository.findActiveByLabel(csvDataDto.getColorLabel())
-                    .orElseThrow(() ->  new CucpSystemException(""));
+                    .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
 
-            List<CarDetail> targetDetailList = carDetailRepository.findTarget(grade,store, color, csvDataDto.getModelYear(), csvDataDto.getDistance());
-            CarDetail carDetail = null;
+            List<CarDetail> targetDetailList = carDetailRepository.findTarget(grade, store, color, csvDataDto.getModelYear(), csvDataDto.getDistance());
+            CarDetail carDetail;
             Price price = new Price();
             if (targetDetailList.size() == 1) {
                 // 検索結果が１件だけである場合
@@ -264,7 +269,7 @@ public class FileImportService {
                 price.setPrice(csvDataDto.getPrice());
                 price.setDate(new Date());
                 carDetail.getPriceList().add(price);
-            } else if(targetDetailList.size() == 0) {
+            } else if (targetDetailList.size() == 0) {
                 // 検索結果が０件である場合
                 carDetail = new CarDetail();
                 carDetail.setGrade(grade);
@@ -291,11 +296,52 @@ public class FileImportService {
         csvResultDto.setNewCarDetailList(newCarDetailList);
         return csvResultDto;
     }
-//
-//    createCarDetail(Request request) {
-//        // フロントで確認・手直しされたデータを元にCarDetail作成しsave、
-//        // そのCarDetailを元にPriceをsaveという流れ
-//    }
+
+    /**
+     * 受け取った編集済み車種詳細を登録/更新し、価格データを登録する.
+     *
+     * @param requestCsvResult 編集済みリクエスト
+     * @return 登録成功詳細
+     */
+    public List<CarDetail> saveNewDetails(RequestCsvResult requestCsvResult) {
+
+        return requestCsvResult.getCarDetails()
+                .stream()
+                .map(requestCarDetail -> {
+
+                    // 各マスタ取得、この時点でマスタがない場合システム的におかしいのでエラーをスロー
+                    Grade grade = Optional.ofNullable(gradeRepository.findActiveById(requestCarDetail.getGradeId()))
+                            .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
+                    Store store = Optional.ofNullable(storeRepository.findActiveById(requestCarDetail.getStoreId()))
+                            .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
+                    Color color = Optional.ofNullable(colorRepository.findActiveById(requestCarDetail.getColorId()))
+                            .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
+
+                    CarDetail carDetail = Optional.ofNullable(carDetailRepository.findActiveById(requestCarDetail.getDetailId()))
+                            .orElse(new CarDetail());
+
+                    carDetail.setId(requestCarDetail.getDetailId() == null ? null : requestCarDetail.getDetailId());
+                    carDetail.setGrade(grade);
+                    carDetail.setStore(store);
+                    carDetail.setColor(color);
+                    carDetail.setDistance(requestCarDetail.getDistance());
+                    carDetail.setMission(requestCarDetail.getMission());
+                    carDetail.setModelYear(requestCarDetail.getModelYear());
+                    carDetail.setUrl(requestCarDetail.getUrl());
+                    carDetail.setNote(requestCarDetail.getNote());
+
+                    carDetail = carDetailRepository.save(carDetail);
+
+                    Price price = new Price();
+                    price.setCarDetail(carDetail);
+                    price.setPrice(requestCarDetail.getLastPrice());
+                    price.setDate(requestCarDetail.getLastDate());
+                    priceRepository.save(price);
+                    
+                    return carDetail;
+                })
+                .collect(Collectors.toList());
+    }
 
     /**
      * CSVの並び順を管理するEnum.CSVの順番が変わったらここを変更する.
