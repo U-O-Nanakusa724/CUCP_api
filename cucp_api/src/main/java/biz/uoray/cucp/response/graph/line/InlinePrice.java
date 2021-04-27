@@ -1,5 +1,6 @@
 package biz.uoray.cucp.response.graph.line;
 
+import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.entity.Price;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +22,7 @@ public class InlinePrice {
         this.value = String.valueOf(price.getPrice());
     }
 
-    @JsonFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = Constants.JST)
     @JsonProperty("x")
     private Date label;
 
