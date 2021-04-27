@@ -8,6 +8,7 @@ import biz.uoray.cucp.exception.CucpBadRequestException;
 import biz.uoray.cucp.exception.CucpSystemException;
 import biz.uoray.cucp.repository.*;
 import biz.uoray.cucp.request.RequestCsvResult;
+import biz.uoray.cucp.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -305,6 +306,9 @@ public class FileImportService {
      */
     public List<CarDetail> saveNewDetails(RequestCsvResult requestCsvResult) {
 
+        // 全Priceリストを用意
+        List<Price> activePriceList = priceRepository.getActiveAll();
+
         return requestCsvResult.getCarDetails()
                 .stream()
                 .map(requestCarDetail -> {
@@ -317,6 +321,7 @@ public class FileImportService {
                     Color color = Optional.ofNullable(colorRepository.findActiveById(requestCarDetail.getColorId()))
                             .orElseThrow(() -> new CucpSystemException("errors.SystemError"));
 
+                    // Detail、既存のものがあれば取得、無ければ新規作成
                     CarDetail carDetail = Optional.ofNullable(carDetailRepository.findActiveById(requestCarDetail.getDetailId()))
                             .orElse(new CarDetail());
 
@@ -330,14 +335,22 @@ public class FileImportService {
                     carDetail.setUrl(requestCarDetail.getUrl());
                     carDetail.setNote(requestCarDetail.getNote());
 
+                    // 保存して新規作成分のDetailのIDを決定
                     carDetail = carDetailRepository.save(carDetail);
 
-                    Price price = new Price();
+                    Price price = activePriceList.stream()
+                            .filter(price1 ->
+                                    price1.getCarDetail().getId().equals(requestCarDetail.getDetailId())
+                                            && DateUtil.convertDateToString(price1.getDate(), Constants.SIMPLE_DATE_FORMAT)
+                                            .equals(DateUtil.convertDateToString(requestCarDetail.getLastDate(), Constants.SIMPLE_DATE_FORMAT)))
+                            .findFirst()
+                            .orElse(new Price());
+
                     price.setCarDetail(carDetail);
                     price.setPrice(requestCarDetail.getLastPrice());
                     price.setDate(requestCarDetail.getLastDate());
                     priceRepository.save(price);
-                    
+
                     return carDetail;
                 })
                 .collect(Collectors.toList());
