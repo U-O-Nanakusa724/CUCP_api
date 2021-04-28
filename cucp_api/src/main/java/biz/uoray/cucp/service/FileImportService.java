@@ -60,6 +60,9 @@ public class FileImportService {
         // CSVをテータ化したDTOリスト
         List<CsvDataDto> csvDataDtoList = createDto(file);
 
+        // 必須項目が存在するもののみに絞り込み
+        csvDataDtoList = filterCsvData(csvDataDtoList);
+
         csvResultDto.setCsvDataDtoList(csvDataDtoList);
         csvResultDto.setNewCarList(createNewCars(csvDataDtoList));
         csvResultDto.setNewGradeList(createNewGrades(csvDataDtoList));
@@ -96,49 +99,52 @@ public class FileImportService {
                 CsvDataDto csvDataDto = new CsvDataDto();
 
                 for (int index = 0; index < COLUMN_COUNT; index++) {
-                    // indexから操作対象を決定
-                    Columns column = Columns.getByIndex(index);
-                    switch (column) {
-                        case CAR:
-                            csvDataDto.setCarName(split[index]);
-                            break;
-                        case MISSION:
-                            csvDataDto.setMission(split[index]);
-                            break;
-                        case COLOR:
-                            csvDataDto.setColorLabel(split[index].trim());
-                            break;
-                        case PRICE:
-                            csvDataDto.setPrice(Double.parseDouble(split[index]));
-                            break;
-                        case MODEL_YEAR:
-                            String localDateString = String.format("%s/01/01 00:00:00", split[index]);
-                            LocalDateTime localDateTime = LocalDateTime.parse(localDateString,
-                                    DateTimeFormatter.ofPattern(Constants.SIMPLE_DATETIME_FORMAT));
-                            ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, Constants.JST_ZONE_ID);
-                            csvDataDto.setModelYear(Date.from(zonedDateTime.toInstant()));
-                            break;
-                        case DISTANCE:
-                            csvDataDto.setDistance(split[index]);
-                            break;
-                        case STORE_NAME:
-                            csvDataDto.setStoreName(split[index]);
-                            break;
-                        case NOTE:
-                            // TODO note項目からgrade切り出しOK,他のデータは現在破棄
-                            String[] grade = split[index].split(" ");
-                            if (grade.length > 1) {
-                                csvDataDto.setGrade(String.format("%s %s", grade[0], grade[1]));
-                            } else {
-                                csvDataDto.setGrade(grade[0]);
-                            }
-                            break;
-                        case URL:
-                            csvDataDto.setUrl(split[index]);
-                            break;
-                        case NOT_MATCHED:
-                        default:
-                            break;
+                    // split[index]の中身がない限り処理は行わない
+                    if (!split[index].isEmpty()) {
+                        // indexから操作対象を決定
+                        Columns column = Columns.getByIndex(index);
+                        switch (column) {
+                            case CAR:
+                                csvDataDto.setCarName(split[index]);
+                                break;
+                            case MISSION:
+                                csvDataDto.setMission(split[index]);
+                                break;
+                            case COLOR:
+                                csvDataDto.setColorLabel(split[index].trim());
+                                break;
+                            case PRICE:
+                                csvDataDto.setPrice(Double.parseDouble(split[index]));
+                                break;
+                            case MODEL_YEAR:
+                                String localDateString = String.format("%s/01/01 00:00:00", split[index]);
+                                LocalDateTime localDateTime = LocalDateTime.parse(localDateString,
+                                        DateTimeFormatter.ofPattern(Constants.SIMPLE_DATETIME_FORMAT));
+                                ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, Constants.JST_ZONE_ID);
+                                csvDataDto.setModelYear(Date.from(zonedDateTime.toInstant()));
+                                break;
+                            case DISTANCE:
+                                csvDataDto.setDistance(split[index]);
+                                break;
+                            case STORE_NAME:
+                                csvDataDto.setStoreName(split[index]);
+                                break;
+                            case NOTE:
+                                // TODO note項目からgrade切り出しOK,他のデータは現在破棄
+                                String[] grade = split[index].split(" ");
+                                if (grade.length > 1) {
+                                    csvDataDto.setGrade(String.format("%s %s", grade[0], grade[1]));
+                                } else {
+                                    csvDataDto.setGrade(grade[0]);
+                                }
+                                break;
+                            case URL:
+                                csvDataDto.setUrl(split[index]);
+                                break;
+                            case NOT_MATCHED:
+                            default:
+                                break;
+                        }
                     }
                 }
                 csvDataDtoList.add(csvDataDto);
@@ -147,6 +153,21 @@ public class FileImportService {
         } catch (IOException e) {
             throw new RuntimeException("ファイルが読み込めません", e);
         }
+    }
+
+    /**
+     * 必須項目がないデータを除外する
+     *
+     * @param csvDataDtoList 全て取り込んだリスト
+     * @return 必須項目が抜けているものを除外したリスト
+     */
+    private List<CsvDataDto> filterCsvData (List<CsvDataDto> csvDataDtoList) {
+        return csvDataDtoList.stream()
+                .filter(csvDataDto -> csvDataDto.getCarName() != null)
+                .filter(csvDataDto -> csvDataDto.getGrade() != null)
+                .filter(csvDataDto -> csvDataDto.getStoreName() != null)
+                .filter(csvDataDto -> csvDataDto.getColorLabel() != null)
+                .collect(Collectors.toList());
     }
 
     /**
