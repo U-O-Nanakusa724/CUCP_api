@@ -11,7 +11,7 @@ public class CsvDataDto {
     private String grade;
     private String mission;
     private String colorLabel;
-    private double price;
+    private Double price;
     private Date modelYear;
     private String distance;
     private String storeName;

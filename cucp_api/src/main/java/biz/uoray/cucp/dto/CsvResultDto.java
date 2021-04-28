@@ -14,4 +14,5 @@ public class CsvResultDto {
     List<Store> newStoreList;
     List<Color> newColorList;
     List<CarDetail> newCarDetailList;
+    List<String> errorList;
 }
