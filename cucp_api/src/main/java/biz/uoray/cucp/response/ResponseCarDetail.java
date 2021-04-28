@@ -33,14 +33,14 @@ public class ResponseCarDetail {
         this.url = carDetail.getUrl();
         this.note = carDetail.getNote();
         Optional.ofNullable(carDetail.getPriceList()).ifPresent(prices -> {
-            if (prices.size() > 0) {
-                this.lastPrice = prices.get(0).getPrice();
-                this.lastDate = prices.get(0).getDate();
-            }
             this.priceList = prices.stream()
                     .sorted(Comparator.comparing(Price::getDate).reversed())
                     .map(ResponsePrice::new)
                     .collect(Collectors.toList());
+            if (this.priceList.size() > 0) {
+                this.lastPrice = this.priceList.get(0).getPrice();
+                this.lastDate = this.priceList.get(0).getDate();
+            }
         });
     }
 
