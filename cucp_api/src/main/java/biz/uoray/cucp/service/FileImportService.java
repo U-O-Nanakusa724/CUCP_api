@@ -86,7 +86,8 @@ public class FileImportService {
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
 
-            String line;
+            // １行目だけループ外で呼んで除去
+            String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 // カンマ分割
                 final String[] split = line.split(",");
@@ -131,7 +132,11 @@ public class FileImportService {
                                 break;
                             case NOTE:
                                 // TODO note項目からgrade切り出しOK,他のデータは現在破棄
-                                String[] grade = split[index].split(" ");
+                                String gradeLine = split[index]
+                                        .replaceAll("\u00a0", ",")
+                                        .replaceAll("　", ",")
+                                        .replaceAll("\\s", ",");
+                                String[] grade = gradeLine.split(",");
                                 if (grade.length > 1) {
                                     csvDataDto.setGrade(String.format("%s %s", grade[0], grade[1]));
                                 } else {
@@ -299,7 +304,7 @@ public class FileImportService {
                 carDetail.setUrl(Optional.ofNullable(csvDataDto.getUrl()).orElse(null));
                 carDetail.setNote(Optional.ofNullable(csvDataDto.getNote()).orElse(null));
 
-                price.setPrice(csvDataDto.getPrice());
+                price.setPrice(csvDataDto.getPrice() != null ? csvDataDto.getPrice() : 0);
                 price.setDate(new Date());
                 List<Price> priceList = new ArrayList<>();
                 priceList.add(price);
