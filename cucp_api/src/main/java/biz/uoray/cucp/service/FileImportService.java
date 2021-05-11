@@ -172,6 +172,7 @@ public class FileImportService {
                 .filter(csvDataDto -> csvDataDto.getGrade() != null)
                 .filter(csvDataDto -> csvDataDto.getStoreName() != null)
                 .filter(csvDataDto -> csvDataDto.getColorLabel() != null)
+                .filter(csvDataDto -> csvDataDto.getPrice() != null)
                 .collect(Collectors.toList());
     }
 
