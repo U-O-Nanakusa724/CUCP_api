@@ -1,6 +1,5 @@
 package biz.uoray.cucp.service;
 
-import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.entity.*;
 import biz.uoray.cucp.exception.CucpBadRequestException;
 import biz.uoray.cucp.exception.CucpNotFoundException;
@@ -69,8 +68,8 @@ public class CarDetailService {
         Date startDate;
         Date endDate;
         try {
-            startDate = format.parse(start);
-            endDate = format.parse(end);
+            startDate = format.parse(String.format("%s0101", start));
+            endDate = format.parse(String.format("%s1231", end));
             if (startDate.after(endDate)) {
                 throw new CucpBadRequestException("Validate.MisplacedStartAndEnd");
             }
