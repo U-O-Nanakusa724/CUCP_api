@@ -9,7 +9,9 @@ errors:
   csv:
     DetailIdentification: "グレード、年式、距離、色、販売点全てが等しいデータがあります。車種詳細画面から確認してください。"
 validate:
-  NotNullValidation: "未入力エラー"
+  NotNullValidation: "未入力です。"
   NotBlankValidation: "空白は保存できません。"
   OverMaximumStringValidation: "最大文字数を超過しています。"
   UnderMinimumStringValidation: "最小文字数未満です。"
+  NotEmptyValidation: "未入力または空白です。"
+  MisplacedStartAndEnd: "開始日時と終了日時が逆転しています。"

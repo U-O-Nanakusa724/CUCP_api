@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @CrossOrigin
 @Controller
 @RequestMapping("/v1/cardetails")
@@ -35,6 +37,21 @@ public class CarDetailController {
     public ResponseCarDetailList getCarDetail() {
         Pageable pageable = PageRequest.of(0, 10000);
         return new ResponseCarDetailList(carDetailService.getAll(pageable));
+    }
+
+    /**
+     * 車種詳細一覧表示(絞り込みあり)
+     *
+     * @return 車種詳細一覧
+     */
+    @ResponseBody
+    @ApiOperation(value = "車種詳細一覧を絞り込み取得する", nickname = "getFilteredCarDetails")
+    @GetMapping("/filter")
+    public ResponseCarDetailList getCarDetailWithCondition(
+            @RequestParam(value = "grade_id") Integer gradeId,
+            @RequestParam(value = "start") String start,
+            @RequestParam(value = "end") String end) {
+        return new ResponseCarDetailList(carDetailService.getWithCondition(gradeId, start, end));
     }
 
     /**

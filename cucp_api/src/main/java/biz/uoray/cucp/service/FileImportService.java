@@ -166,7 +166,7 @@ public class FileImportService {
      * @param csvDataDtoList 全て取り込んだリスト
      * @return 必須項目が抜けているものを除外したリスト
      */
-    private List<CsvDataDto> filterCsvData (List<CsvDataDto> csvDataDtoList) {
+    private List<CsvDataDto> filterCsvData(List<CsvDataDto> csvDataDtoList) {
         return csvDataDtoList.stream()
                 .filter(csvDataDto -> csvDataDto.getCarName() != null)
                 .filter(csvDataDto -> csvDataDto.getGrade() != null)
