@@ -1,7 +1,10 @@
 package biz.uoray.cucp.service;
 
+import biz.uoray.cucp.constant.Constants;
 import biz.uoray.cucp.entity.*;
+import biz.uoray.cucp.exception.CucpBadRequestException;
 import biz.uoray.cucp.exception.CucpNotFoundException;
+import biz.uoray.cucp.model.repository.custom.CarDetailRepositoryCustom;
 import biz.uoray.cucp.repository.CarDetailRepository;
 import biz.uoray.cucp.repository.ColorRepository;
 import biz.uoray.cucp.repository.GradeRepository;
@@ -13,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +37,9 @@ public class CarDetailService {
     @Autowired
     CarDetailRepository carDetailRepository;
 
+    @Autowired
+    CarDetailRepositoryCustom carDetailRepositoryCustom;
+
     /**
      * 有効な車種詳細一覧を取得する
      *
@@ -46,6 +54,30 @@ public class CarDetailService {
             carDetail.setPriceList(priceList);
         });
         return carDetails;
+    }
+
+    /**
+     * グレードと年式で絞り込んだ車種詳細を返却する.
+     *
+     * @param gradeId グレードId
+     * @param start   開始年式
+     * @param end     終了年式
+     * @return 条件に合致する車種詳細
+     */
+    public List<CarDetail> getWithCondition(Integer gradeId, String start, String end) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        Date startDate;
+        Date endDate;
+        try {
+            startDate = format.parse(start);
+            endDate = format.parse(end);
+            if (startDate.after(endDate)) {
+                throw new CucpBadRequestException("Validate.MisplacedStartAndEnd");
+            }
+        } catch (ParseException e) {
+            throw new CucpBadRequestException("Validate.NotEmptyValidation");
+        }
+        return carDetailRepositoryCustom.getCarDetailWithCondition(gradeId, startDate, endDate);
     }
 
     /**
