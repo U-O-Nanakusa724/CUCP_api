@@ -195,6 +195,51 @@ dockerコマンドが通らなかった際に「pipを通してインストー�
 結果dockerコマンドにsudoをつけなかったことが原因で必要ライブラリにアクセスできないだけだった。  
 proには入れてないため割愛する。
 
+
+Curl更新
+$ sudo yum install epel-release
+$ sudo yum install libnghttp2
+
+$ sudo nano /etc/yum.repos.d/city-fan.repo
+
+下記を記載
+```
+[CityFan]
+name=City Fan Repo
+baseurl=http://www.city-fan.org/ftp/contrib/yum-repo/rhel$releasever/$basearch/
+enabled=1
+gpgcheck=0
+```
+
+$ sudo yum clean all
+$ sudo yum install curl 
+
+
+
+Git
+# インストールに必要なものを用意
+$ sudo yum install wget
+$ sudo yum -y install make
+$ sudo yum install gcc
+$ sudo yum install perl-ExtUtils-MakeMaker
+
+# Gitが依存するライブラリの準備
+$ sudo yum -y install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+
+# 既存のGit削除
+sudo -E yum -y remove git
+git --version
+
+# wgetコマンドでtarファイル取得し解凍
+sudo wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+sudo tar xzvf git-2.9.5.tar.gz
+
+# makeコマンドでインストール
+$ cd git-2.9.5
+$ sudo make prefix=/usr/local all
+$ sudo make prefix=/usr/local install
+
+
 ## 遭遇したトラブルと対処方など
 
 - メモリ容量が足りずTomcatやdockerなどの主要コンテンツのインストールができない
